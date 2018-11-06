@@ -1,10 +1,5 @@
 # -*- coding:utf-8 -*-
-import json
-import sys
-import logging
 import pymysql
-import os
-import datetime
 
 ################ 初始连接到MySQL ######################
 def connect_db():
