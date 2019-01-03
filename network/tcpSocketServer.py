@@ -25,8 +25,14 @@ def main():
         # 1、客户端发送过来数据
         # 2、客户端调用close
         if recv_data:
+
+            # 给浏览器发送数据
+            http_data = 'HTTP/1.1 200 OK \n' \
+                        '\n' \
+                        '<h1>hahaha</h1>'
             # 给客户端发送数据
-            new_client_socket.send("got it".encode('utf-8'))
+            # new_client_socket.send("got it".encode('utf-8'))
+            new_client_socket.send(http_data.encode('utf-8'))
         else:
             break
 
