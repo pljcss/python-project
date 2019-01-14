@@ -23,5 +23,6 @@ def main():
     print(df[df["Count_AnimalName"]>1000]) # 单条件
     print(df[(df["Count_AnimalName"]>800) & (df["Count_AnimalName"]<1000)]) # 多条件写法
 
+
 if __name__ == '__main__':
     main()

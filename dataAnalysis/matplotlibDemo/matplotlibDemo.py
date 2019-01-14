@@ -14,7 +14,7 @@ def main():
     # 在执行程序的时候展示图形
     plt.show()
 
-    print x
+    print(x)
 
 if __name__ == '__main__':
     main()

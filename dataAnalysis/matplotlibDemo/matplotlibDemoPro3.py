@@ -5,8 +5,8 @@ from matplotlib import font_manager
 import sys
 
 # 解决python2 matplotlib中文显示报错问题
-reload(sys)
-sys.setdefaultencoding('utf-8')
+# reload(sys)
+# sys.setdefaultencoding('utf-8')
 
 '''
 添加多个曲线图
