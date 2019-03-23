@@ -16,11 +16,11 @@ def insert_db(db):
             for line in f.readlines():
                 line_list = line.split(',')
                 if len(line_list) == 8:
-                    print line
+                    print(line)
                     try:
                         cur.execute(sql_insert % (line_list[0],line_list[1],line_list[2],line_list[3],line_list[4],line_list[5],line_list[6],line_list[7]))
                     except BaseException as e:
-                        print e.message
+                        print(e.message)
 
                     db.commit()
 

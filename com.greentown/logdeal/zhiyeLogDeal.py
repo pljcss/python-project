@@ -5,7 +5,7 @@ import logging
 import pymysql
 import os
 import datetime
-reload(sys)
+# reload(sys)
 sys.setdefaultencoding("utf-8")
 # 获取logger实例，如果参数为空则返回root logger
 logger = logging.getLogger("zhiyeLogdeal")

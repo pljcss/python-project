@@ -17,7 +17,7 @@ def textVector():
     data = cv.fit_transform(["life is is short, i like python", "life is too long, i dislike python"])
 
     # 如果使用空格切割,则会有不同的分词方式;对于中文,应该先分词
-    data_cn = cv.fit_transform(["人生苦短,我用python", "人生 漫长,我用java"])
+    # data_cn = cv.fit_transform(["人生苦短,我用python", "人生 漫长,我用java"])
 
     # 打印结果
     print(cv.get_feature_names())
@@ -138,4 +138,4 @@ def im():
     return None
 
 if __name__ == '__main__':
-    im()
+    textVector()
