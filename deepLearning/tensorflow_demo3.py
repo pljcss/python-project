@@ -3,10 +3,10 @@ import tensorflow as tf
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2' # 去除警告
 
+"""
+tensorflow 变量
+"""
 
-'''
-变量
-'''
 # 变量op (里面的值仍然是张量类型)
 a = tf.constant([1, 2, 3, 4, 5]) # 普通张量
 

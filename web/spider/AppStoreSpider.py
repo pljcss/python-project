@@ -3,8 +3,8 @@ import urllib2
 import json
 
 import sys
-reload(sys)
-sys.setdefaultencoding('utf8')
+# reload(sys)
+# sys.setdefaultencoding('utf8')
 
 # url = 'https://itunes.apple.com/rss/customerreviews/id=529092160/json'
 

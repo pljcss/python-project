@@ -3,9 +3,9 @@ import tensorflow as tf
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL']='2' # 去除警告
 
-'''
+"""
 可视化 Tensorboard
-'''
+"""
 
 # 常量
 a = tf.constant(5.0, name="a")

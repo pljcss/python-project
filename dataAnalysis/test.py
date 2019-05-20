@@ -2,7 +2,6 @@
 import pandas as pd
 
 def deal_data():
-
     with open("/Users/saicao/Desktop/副本.csv") as f:
         str = ""
         index = 0
