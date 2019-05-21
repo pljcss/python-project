@@ -5,10 +5,13 @@ import time
 from bs4 import BeautifulSoup
 import random
 
-"""
-封装 requests 模块
-"""
+
 def requests_utils(url):
+    """
+    封装 requests 模块
+    :param url:
+    :return:
+    """
 
     # 动态加载 user_agent
     user_agent = [

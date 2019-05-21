@@ -7,10 +7,14 @@ import random
 from spider import spiderUtils
 
 
-"""
-百度地图接口
-"""
 def get_content_from_baidu(page_size=20, page_num=0):
+    """
+    百度地图接口
+    :param page_size:
+    :param page_num:
+    :return:
+    """
+
     ak = "HSpG2oGjxfDeFyLamp89ENfQ3gXckMzG"
     url = "http://api.map.baidu.com/place/v2/search?query=医院&region=浦东新区&output=json&ak=%s&page_size=%d&page_num=%d" %(ak, page_size, page_num)
 
@@ -44,10 +48,13 @@ def get_content_from_baidu(page_size=20, page_num=0):
         except Exception as e:
             print(e)
 
-"""
-高德读取接口
-"""
+
 def get_content_from_gaode():
+    """
+    高德地图接口
+    :return:
+    """
+
     ak = "610479fef7daa6a9a1291889c357a0e0"
     keyword = "医院"
     city = "浦东新区"
@@ -57,10 +64,12 @@ def get_content_from_gaode():
 
     print(response.text)
 
-"""
-获取大众点评数据 url
-"""
+
 def get_dazhong_url():
+    """
+    获取大众点评数据 url
+    :return:
+    """
     url = "http://www.dianping.com/search/keyword/1/0_美容医院"
 
     response = spiderUtils.requests_utils(url)
@@ -82,10 +91,13 @@ def get_dazhong_url():
 
     return url_set
 
-"""
-解析大众点评 url
-"""
+
+
 def parse_dazhong_url():
+    """
+    解析大众点评 url
+    :return:
+    """
     # url_set = get_dazhong_url()
 
     url_set = {'http://www.dianping.com/shop/98440846', 'http://www.dianping.com/shop/68960534',
@@ -133,5 +145,7 @@ def parse_dazhong_url():
         print(tel)
 
         print(hospital_name, address, tel)
+
+
 if __name__ == '__main__':
     parse_dazhong_url()

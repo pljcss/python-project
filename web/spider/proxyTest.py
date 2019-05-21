@@ -1,6 +1,11 @@
 import requests
 
 def test():
+    """
+    设置代理 IP
+    :return:
+    """
+
     # 设置shadowsocks代理ip成功
     proxies = {'http': 'http://127.0.0.1:1087',
                'https': 'http://127.0.0.1:1087'}
