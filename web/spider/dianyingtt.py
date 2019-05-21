@@ -1,23 +1,23 @@
 # -*- coding:utf-8 -*-
-import urllib2
+import urllib3
 from lxml import etree
 import sys
 
-reload(sys)
-sys.setdefaultencoding('utf-8')
-tt = sys.getfilesystemencoding()
+# reload(sys)
+# sys.setdefaultencoding('utf-8')
+# tt = sys.getfilesystemencoding()
 
 # 读取 url
 def download(url, user_agent='wswp', num_retries=3):
     # print 'Downloading:', url
     headers = {'User-Agent':'Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.6) Gecko/20091201 Firefox/3.5.6'}
-    request = urllib2.Request(url, headers=headers)
+    request = urllib3.Request(url, headers=headers)
     try:
-        html = urllib2.urlopen(request).read().decode('gbk').encode('utf-8')
+        html = urllib3.urlopen(request).read().decode('gbk').encode('utf-8')
         # 下载链接时, 不编码
         # html = urllib2.urlopen(request).read().decode('gbk').encode('utf-8')
-    except urllib2.URLError as e:
-        print 'Download Error: ', e.reason
+    except urllib3.URLError as e:
+        print('Download Error: ', e.reason)
         html = None
         if num_retries > 0:
             if hasattr(e, 'code') and 500 <= e.code < 600:

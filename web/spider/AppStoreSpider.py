@@ -1,5 +1,5 @@
 # -*- coding:utf-8 -*-
-import urllib2
+import urllib3
 import json
 
 import sys
@@ -11,7 +11,7 @@ import sys
 for page in range(1,1000):
     url = 'https://itunes.apple.com/rss/customerreviews/page=' + str(page) + '/id=957323480/sortby=mostrecent/json?l=en&&cc=cn'
 
-    response = urllib2.urlopen(url)
+    response = urllib3.urlopen(url)
 
     html = response.read()
 
@@ -22,7 +22,7 @@ for page in range(1,1000):
     for line in json_list:
         res_str = res_str + line['title']['label'] + "\n"
 
-    print res_str
+    print(res_str)
 
     with open('/Users/saicao/Desktop/file1.txt', 'a+') as f:
         f.write(res_str)
