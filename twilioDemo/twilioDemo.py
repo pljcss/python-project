@@ -19,8 +19,8 @@ def calls(client):
     print(call.sid)
 
 if __name__ == '__main__':
-    account_sid = 'AC39040bbcf30ea09f0fd4d3a7f959076f'
-    auth_token = '686b58f3657a8697ba56f9da813143c7'
+    account_sid = 'xxx'
+    auth_token = 'xxx'
     client = Client(account_sid, auth_token)
 
     calls(client)
