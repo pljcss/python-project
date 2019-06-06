@@ -9,7 +9,7 @@ def main():
     tcp_client_socket.connect(('127.0.0.1', 7788))
 
     # 发送数据/接收数据
-    send_data = raw_input("请输入要发送的数据:")
+    send_data = input("请输入要发送的数据:")
     tcp_client_socket.send(send_data.encode('utf-8'))
 
     # 关闭套接字

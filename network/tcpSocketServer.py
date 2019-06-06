@@ -19,7 +19,7 @@ def main():
 
         # 接收客户端发送过来的请求
         recv_data = new_client_socket.recv(1024)
-        print recv_data
+        print(recv_data)
 
         # 如果recv解堵塞, 那么有两种方式
         # 1、客户端发送过来数据

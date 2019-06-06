@@ -5,8 +5,8 @@ import sys
 import re
 from web.spider.dianyingtt import download
 
-reload(sys)
-sys.setdefaultencoding('utf-8')
+# reload(sys)
+# sys.setdefaultencoding('utf-8')
 
 def parse_movie_url(url):
     # html = download("http://www.ygdy8.net/html/gndy/dyzz/20181025/57658.html")
@@ -33,7 +33,7 @@ def parse_movie_url(url):
             try:
                 label = re.findall(r"(\d\d\d\d)", page_line_str)[0]
             except BaseException as e:
-                print e.message
+                print(e.message)
             movie_type = movie_type + label + ","
         elif "产　　地" in page_line_str:
             label = page_line_str[18:].strip()
@@ -49,17 +49,17 @@ def parse_movie_url(url):
             try:
                 label = re.findall(r"(\d\.\d)", page_line_str)[0]
             except BaseException as e:
-                print e.message
+                print(e.message)
             movie_type = movie_type + label + ","
         elif "豆瓣评分" in page_line_str:
             label = ""
             try:
                 label = re.findall(r"(\d\.\d)", page_line_str)[0]
             except BaseException as e:
-                print e.message
+                print(e.message)
             movie_type = movie_type + label
 
-    print movie_type,url
+    print(movie_type,url)
     return movie_type + ',' + url
 
 with open('/Users/saicao/Desktop/movie_file1.txt', 'r') as f:
