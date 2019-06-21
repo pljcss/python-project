@@ -5,8 +5,8 @@ import logging
 import pymysql
 import os
 import datetime
-reload(sys)
-sys.setdefaultencoding("utf-8")
+# reload(sys)
+# sys.setdefaultencoding("utf-8")
 
 ################ 初始连接到MySQL ######################
 def connect_db():
@@ -50,7 +50,7 @@ def insert_db(db):
                                                       if_contain_key(lines_message_dict,"channel_source")))
                             db.commit()
                     except ValueError as err:
-                        print err
+                        print(err)
 
 ############################ 判断是否存在key ##############
 def if_contain_key(dict_lines={}, str_key=str):
@@ -69,6 +69,6 @@ def format_time(time_org):
             dt = dt + datetime.timedelta(hours=8)
             return dt.strftime("%Y-%m-%d %H:%M:%S")
         except ValueError as err:
-            print err.message
+            print(err.message)
 
 insert_db(connect_db())
