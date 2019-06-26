@@ -17,9 +17,10 @@ def main():
         # 监听套接字负责等待有新的客户端链接, accept产生的新的套接字用来为客户端服务
         new_client_socket, client_addr = tcp_server_socket.accept()
 
+        print(client_addr)
         # 接收客户端发送过来的请求
         recv_data = new_client_socket.recv(1024)
-        print recv_data
+        print(recv_data)
 
         # 如果recv解堵塞, 那么有两种方式
         # 1、客户端发送过来数据
