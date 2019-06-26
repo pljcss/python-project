@@ -11,7 +11,7 @@ def decision():
     """
     # 获取数据
     # titanic = pd.read_csv("http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/titanic.txt") # 可以直接读取网络数据
-    titanic = pd.read_csv("/Users/saicao/Desktop/data/titanic.txt")
+    titanic = pd.read_csv("/Users/saicao/Desktop/stu_data/data/titanic.txt")
 
     # 处理数据, 找出特征值和目标值
     x = titanic[['pclass', 'age', 'sex']]
