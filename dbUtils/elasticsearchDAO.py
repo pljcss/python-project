@@ -79,9 +79,8 @@ if __name__ == '__main__':
     es = Elasticsearch(hosts=host)
     # print(es.info()) # 需要加括号,否则不输出
 
-    new_id = 504488
+    new_id = 1
 
-    body = dict()
     element_list = []
     with open('/Users/caosai/Desktop/lbs_all_distinct.txt') as f:
         files = f.readlines()
@@ -90,48 +89,57 @@ if __name__ == '__main__':
         for file in files:
             # file_json = json.loads(file.replace("'", '"').strip()) # 出错
             file_dict = eval(file)
+            body = dict()
 
-            name = file_dict.get("name", 0)
-            location = file_dict.get("location", 0) # 经纬度
-            address = file_dict.get("address", 0)
-            province = file_dict.get("province", 0)
-            city = file_dict.get("city", 0)
-            region = file_dict.get("area", 0)
-            telephone = file_dict.get("telephone", 0)
+            id_es = new_id + i
 
-            body["id"] = new_id + i
-            body["name"] = name
-            body["status"] = 0
-            body["tel"] = telephone
-            body["address"] = address
-            body["shop_latitude"] = get_lat(location)
-            body["shop_longitude"] = get_lng(location)
-            body["province"] = province
-            body["city"] = city
-            body["region"] = region
-            body["disabled"] = 0
+            name = str(file_dict.get("name", "无"))
 
-            print(telephone)
-            # 如果是字典类型,则插入数据
-            if isinstance(location, dict):
-                body["location"] = location
+            if "理发" not in name and "美发" not in name and "汽修" not in name and "汽车" not in name:
+                location = file_dict.get("location", "0") # 经纬度
+                address = file_dict.get("address", "无")
+                province = file_dict.get("province", "无")
+                city = file_dict.get("city", "无")
+                region = file_dict.get("area", "无")
+                telephone = file_dict.get("telephone", "无")
 
-            i = i + 1
+                body["id"] = id_es
+                body["name"] = name
+                body["status"] = 0
+                body["tel"] = telephone
+                body["address"] = address
+                body["shop_latitude"] = str(get_lat(location))
+                body["shop_longitude"] = str(get_lng(location))
+                body["province"] = province
+                body["city"] = city
+                body["region"] = region
+                body["disabled"] = 0
 
-            element = {
-                "_index":"shop_face",
-                "_type":"info",
-                "_id":new_id + i,
-                "_source":body
-            }
+                # print(telephone)
+                # 如果是字典类型,则插入数据
+                if isinstance(location, dict):
+                    location["lat"] = str(location.get("lat", "0"))
+                    location["lon"] = str(location.get("lon", "0"))
 
-            # print(element)
+                    body["location"] = location
 
-            element_list.append(element)
-            # break
 
-    helpers.bulk(es, element_list)
-    # print(element_list)
+                element = {
+                    "_index": "shop_face",
+                    "_type": "info",
+                    "_id": id_es,
+                    "_source": body
+                }
+
+
+                # print(element)
+                # print(element)
+                element_list.append(element)
+
+                i = i + 1
+
+        helpers.bulk(es, element_list)
+        # print(element_list)
 
             ######## 单条插入 ########
             # insert_es(es_con=es, index_id=new_id, body=body)
