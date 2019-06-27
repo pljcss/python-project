@@ -53,18 +53,18 @@ def requests_utils(url):
         # proxies = {'http': 'http://125.114.174.50:8888',
         #            'https': 'http://125.114.174.50:8888'}
 
-        print(retry_times)
+        # print(retry_times)
         proxy_ip = random.choice(proxies)
-        print(proxy_ip)
+        # print(proxy_ip)
         try:
             response = requests.get(url, headers=headers, proxies=proxy_ip, timeout=1)
             return response
         except requests.exceptions.ConnectionError as e:
             retry_times = retry_times + 1
-            print("重试第%d"%retry_times,"报错了", e)
+            # print("重试第%d"%retry_times,"报错了", e)
         except requests.exceptions.ReadTimeout as e:
             retry_times = retry_times + 1
-            print("重试第%d"%retry_times,"报错了", e)
+            # print("重试第%d"%retry_times,"报错了", e)
 
     return None
 
