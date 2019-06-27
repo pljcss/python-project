@@ -24,12 +24,12 @@ ningbo_list = ["宁波市"+i for i in ningbo.split(",")]
 
 
 
-# with open("/Users/caosai/Desktop/lbs_all.txt") as fs:
-#     f = fs.readlines()
-#     for i in f:
-#         print(i.strip())
-#         ii = json.loads(i.replace("'", '"').strip())
-#
-#         print(type(ii))
-#
-#         print(ii.get("name"))
+with open("/Users/caosai/Desktop/lbs_all.txt") as fs:
+    f = fs.readlines()
+    for i in f:
+        print(i.strip())
+        ii = json.loads(i.replace("'", '"').strip())
+
+        print(type(ii))
+
+        print(ii.get("name"))
