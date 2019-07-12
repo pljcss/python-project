@@ -32,5 +32,4 @@ data = ''.join(buffer)
 # 关闭连接:
 s.close()
 
-print data
-
+print(data)

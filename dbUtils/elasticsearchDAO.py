@@ -82,6 +82,7 @@ if __name__ == '__main__':
     new_id = 1
 
     element_list = []
+    location_distinct_list = []
     with open('/Users/caosai/Desktop/lbs_all_distinct.txt') as f:
         files = f.readlines()
         i = 0
@@ -103,40 +104,48 @@ if __name__ == '__main__':
                 region = file_dict.get("area", "无")
                 telephone = file_dict.get("telephone", "无")
 
-                body["id"] = id_es
-                body["name"] = name
-                body["status"] = 0
-                body["tel"] = telephone
-                body["address"] = address
-                body["shop_latitude"] = str(get_lat(location))
-                body["shop_longitude"] = str(get_lng(location))
-                body["province"] = province
-                body["city"] = city
-                body["region"] = region
-                body["disabled"] = 0
-
-                # print(telephone)
-                # 如果是字典类型,则插入数据
-                if isinstance(location, dict):
-                    location["lat"] = str(location.get("lat", "0"))
-                    location["lon"] = str(location.get("lon", "0"))
-
-                    body["location"] = location
 
 
-                element = {
-                    "_index": "shop_face",
-                    "_type": "info",
-                    "_id": id_es,
-                    "_source": body
-                }
+                if location not in location_distinct_list:
+                    location_distinct_list.append(location)
+
+                    ######
+                    body["id"] = id_es
+                    body["name"] = name
+                    body["status"] = 0
+                    body["tel"] = telephone
+                    body["address"] = address
+                    body["shop_latitude"] = str(get_lat(location))
+                    body["shop_longitude"] = str(get_lng(location))
+                    body["province"] = province
+                    body["city"] = city
+                    body["region"] = region
+                    body["disabled"] = 0
 
 
-                # print(element)
-                # print(element)
-                element_list.append(element)
 
-                i = i + 1
+                    # print(telephone)
+                    # 如果是字典类型,则插入数据
+                    if isinstance(location, dict):
+                        location["lat"] = str(location.get("lat", "0"))
+                        location["lon"] = str(location.get("lon", "0"))
+
+                        body["location"] = location
+
+
+                    element = {
+                        "_index": "shop_face",
+                        "_type": "info",
+                        "_id": id_es,
+                        "_source": body
+                    }
+
+
+                    # print(element)
+                    # print(element)
+                    element_list.append(element)
+
+                    i = i + 1
 
         helpers.bulk(es, element_list)
         # print(element_list)

@@ -28,16 +28,16 @@ def add(a, b):
 
 # 列表前加一个星
 list1 = [1, 2]
-print add(*list1)
+print(add(*list1))
 
 # 字典前添加两个星
 dict1 = {'a':1, 'b':2}
-print add(**dict1)
-print add(*dict1)
+print(add(**dict1))
+print(add(*dict1))
 
 # tuple前使用*
 tuple1 = (1, 2)
-print add(*tuple1)
+print(add(*tuple1))
 
 
 

@@ -1,5 +1,6 @@
 import json
-
+from datetime import datetime
+import datetime
 beijing_list = ['北京市东城区', '北京市西城区', '北京市朝阳区', '北京市崇文区', '北京市海淀区', '北京市宣武区',
                 '北京市石景山区', '北京市门头沟区', '北京市丰台区', '北京市房山区',
                 '北京市大兴区', '北京市通州区', '北京市顺义区', '北京市平谷区',
@@ -24,12 +25,15 @@ ningbo_list = ["宁波市"+i for i in ningbo.split(",")]
 
 
 
-with open("/Users/caosai/Desktop/lbs_all.txt") as fs:
-    f = fs.readlines()
-    for i in f:
-        print(i.strip())
-        ii = json.loads(i.replace("'", '"').strip())
+# with open("/Users/caosai/Desktop/lbs_all.txt") as fs:
+#     f = fs.readlines()
+#     for i in f:
+#         print(i.strip())
+#         ii = json.loads(i.replace("'", '"').strip())
+#
+#         print(type(ii))
+#
+#         print(ii.get("name"))
 
-        print(type(ii))
 
-        print(ii.get("name"))
+print(datetime.datetime.utcnow())

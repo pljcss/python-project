@@ -17,5 +17,5 @@ def student2dict(std):
     }
 
 # 成功序列化 Student类
-print json.dumps(stu1, default=student2dict)
+print(json.dumps(stu1, default=student2dict))
 
