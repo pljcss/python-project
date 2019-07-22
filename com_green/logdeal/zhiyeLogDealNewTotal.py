@@ -5,7 +5,7 @@ import logging
 import pymysql
 import os
 import datetime
-reload(sys)
+# reload(sys)
 sys.setdefaultencoding("utf-8")
 
 # 获取logger实例，如果参数为空则返回root logger
@@ -256,6 +256,6 @@ def format_time(time_org):
             dt = dt + datetime.timedelta(hours=8)
             return dt.strftime("%Y-%m-%d %H:%M:%S")
         except ValueError as err:
-            print err.message
+            print(err.message)
 
 insert_db(connect_db())

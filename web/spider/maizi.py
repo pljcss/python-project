@@ -4,7 +4,7 @@ import json
 import time
 from bs4 import BeautifulSoup
 import random
-from spider import spiderUtils
+from spider import spider_utils
 import logging
 import logging.config
 logging.config.fileConfig('log.ini')
@@ -51,7 +51,7 @@ def get_all_content_from_baidu(keywords, region, page_size=20, page_num=0):
 
             # print("当前url%s"%url)
             # time.sleep(5)
-            res = spiderUtils.requests_utils(url)
+            res = spider_utils.requests_utils(url)
             # res = requests.get(url)
 
             if res is not None:
@@ -131,7 +131,7 @@ def get_content_from_baidu(keywords, region, page_size=20, page_num=0):
 
         print("当前url%s"%url)
         # time.sleep(5)
-        res = spiderUtils.requests_utils(url)
+        res = spider_utils.requests_utils(url)
         # res = requests.get(url)
 
         if res is not None:
@@ -155,7 +155,7 @@ def get_content_from_baidu(keywords, region, page_size=20, page_num=0):
 
 
                     str1 = i.get("name","0") + "^" + "null^" + i.get("telephone","0") + "^" + i.get("address","0") + "^" + i.get("province","0") + "^" \
-                           + i.get("city","0") + "^" + i.get("area","0") + "^" + str(spiderUtils.get_lng(i.get("location","0"))) + "^" + str(spiderUtils.get_lat(i.get("location","0"))) + "^" \
+                           + i.get("city","0") + "^" + i.get("area","0") + "^" + str(spider_utils.get_lng(i.get("location", "0"))) + "^" + str(spider_utils.get_lat(i.get("location", "0"))) + "^" \
                            + "null^" + "null^" + "null"
 
                     # print(str1)
@@ -192,7 +192,7 @@ def get_dazhong_url():
     """
     url = "http://www.dianping.com/search/keyword/1/0_美容医院"
 
-    response = spiderUtils.requests_utils(url)
+    response = spider_utils.requests_utils(url)
     soup = BeautifulSoup(response.text, features="lxml")
 
     # 存储获取到的url
