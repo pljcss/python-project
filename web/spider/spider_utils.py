@@ -92,6 +92,7 @@ def get_lat(dd):
 
 if __name__ == '__main__':
     result = requests_utils("http://icanhazip.com")
+    # result = requests_utils("http://www.baidu.com")
     if result is None:
         print(result)
     else:

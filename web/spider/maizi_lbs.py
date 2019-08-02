@@ -14,6 +14,8 @@ file_logger = logging.getLogger(name="fileLogger")
 def get_all_content_from_baidu(keywords, region, page_size=20, page_num=0):
     """
     百度地图接口
+    :param keywords:
+    :param region:
     :param page_size:
     :param page_num:
     :return:
@@ -21,7 +23,15 @@ def get_all_content_from_baidu(keywords, region, page_size=20, page_num=0):
     # ak = "HSpG2oGjxfDeFyLamp89ENfQ3gXckMzG"
     ak = "dASz7ubuSpHidP1oQWKuAK3q" # 链家ak
     # url = "http://api.map.baidu.com/place/v2/search?query=%s&region=%s&output=json&ak=%s&page_size=%d&page_num=%d" %(keywords, region, ak, page_size, page_num)
-    url = "http://api.map.baidu.com/place/v2/search?query=%s&region=%s&output=json&scope=2&&ak=%s&page_size=%d&page_num=%d" %(keywords, region, ak, page_size, page_num)
+    url = "http://api.map.baidu.com/place/v2/search?" \
+          "query=%s&" \
+          "region=%s&" \
+          "output=json&" \
+          "scope=2&&ak=%s&" \
+          "page_size=%d&" \
+          "page_num=%d&" \
+          "city_limit=true" \
+          %(keywords, region, ak, page_size, page_num)
 
     res = None
     try:
@@ -47,50 +57,26 @@ def get_all_content_from_baidu(keywords, region, page_size=20, page_num=0):
             # print("第一页, ", page_num)
             file_logger.info("爬取第%s页"%(page_num+1))
 
-            url = "http://api.map.baidu.com/place/v2/search?query=%s&region=%s&output=json&scope=2&ak=%s&page_size=%d&page_num=%d" %(keywords, region, ak, page_size, page_num)
+            url = "http://api.map.baidu.com/place/v2/search?query=%s&region=%s&output=json&scope=2&ak=%s&page_size=%d&page_num=%d&city_limit=true" %(keywords, region, ak, page_size, page_num)
 
             # print("当前url%s"%url)
             # time.sleep(5)
             res = spider_utils.requests_utils(url)
             # res = requests.get(url)
 
+            # print(res)
             if res is not None:
                 json_res = json.loads(res.text)
-
-                # print(json_res)
-                # print(i)
-                # print(url)
-                # print(json_res)
+                print(json_res)
                 try:
                     for i in json_res["results"]:
-                        # print(i)
-                        # print(type(i))
-                        # str1 = i["name"] + "," + "null," + i["telephone"] + "," + i["address"] + "," + i["province"] + "," \
-                        # + i["city"] + "," + i["area"] + "," + str(i["location"]["lng"]) + "," + str(i["location"]["lat"]) + "," \
-                        # + "null," + "null," + "null"
-                        # print(i["name"], i["location"], i["address"], i["telephone"],i["province"],i["city"],i["area"])
-
-                        # str1 = i.get("name","0") + "," + "null," + i.get("telephone","0") + "," + i.get("address","0") + "," + i.get("province","0") + "," \
-                        #        + i.get("city","0") + "," + i.get("area","0") + "," + str(spiderUtils.get_lng(i.get("location","0"))) + "," + str(spiderUtils.get_lat(i.get("location","0"))) + "," \
-                        #        + "null," + "null," + "null"
-
-
-                        # str1 = i.get("name","0") + "^" + "null^" + i.get("telephone","0") + "^" + i.get("address","0") + "^" + i.get("province","0") + "^" \
-                        #        + i.get("city","0") + "^" + i.get("area","0") + "^" + str(spiderUtils.get_lng(i.get("location","0"))) + "^" + str(spiderUtils.get_lat(i.get("location","0"))) + "^" \
-                        #        + "null^" + "null^" + "null"
-
-                        # print(str1)
-
-                        # print(i)
-
                         str2 = str2 + str(i) + "\n"
                 except Exception as e:
-                    # print("报错了", e)
                     file_logger.error("报错了", e)
-
 
         # print(str2)
         with open("/Users/caosai/Desktop/lbs_all.txt", "a+") as f:
+            # print(str2)
             f.write(str2)
 
 
@@ -265,14 +251,14 @@ def parse_dazhong_url():
         print(hospital_name, address, tel)
 
 if __name__ == '__main__':
-    keywords = ["门诊","急诊","诊所","医院","医疗","口腔","眼病","眼科","皮肤","骨科",
-               "中医","手足健康","康复","祛痘","皮肤管理","脱毛","水光","抗衰","埋线",
-               "瘦身","整容","整形","医美","美胸","美体","美白","美颜","美肤"]
+    keywords = ["医美医疗","医美","整容","整形","美体美肤"]
 
     regions = ['北京市东城区', '北京市西城区', '北京市朝阳区', '北京市崇文区', '北京市海淀区', '北京市宣武区',
                '北京市石景山区', '北京市门头沟区', '北京市丰台区', '北京市房山区',
                '北京市大兴区', '北京市通州区', '北京市顺义区', '北京市平谷区',
-               '北京市昌平区', '北京市怀柔区和延庆县', '北京市密云县','上海市松江区', '上海市青浦区', '上海市奉贤区', '上海市黄浦区', '上海市徐汇区', '上海市长宁区',
+               '北京市昌平区', '北京市怀柔区和延庆县', '北京市密云县',
+               '上海市松江区', '上海市青浦区', '上海市奉贤区', '上海市黄浦区',
+               '上海市徐汇区', '上海市长宁区',
                '上海市静安区', '上海市普陀区', '上海市虹口区', '上海市杨浦区', '上海市闵行区', '上海市宝山区',
                '上海市嘉定区', '上海市浦东新区', '上海市金山区', '广州市荔湾区', '广州市越秀区', '广州市海珠区',
                '广州市天河区', '广州市白云区', '广州市黄埔区', '广州市番禺区', '广州市花都区', '广州市南沙区',
@@ -285,4 +271,5 @@ if __name__ == '__main__':
     for region in regions:
         for keyword in keywords:
             file_logger.info("爬取城市%s关键字%s"%(region, keyword))
+            # print(keyword)
             get_all_content_from_baidu(keyword, region)

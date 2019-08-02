@@ -9,8 +9,7 @@ def search_es(es_con:Elasticsearch):
     :param es_con:
     :return:
     """
-
-    body = {
+    query_body = {
         "query":{
             "match_all":{}
         },
@@ -21,27 +20,22 @@ def search_es(es_con:Elasticsearch):
         }
     }
 
-    search_result = es_con.search(index="shop_face", doc_type="info", body=body)
-
+    search_result = es_con.search(index="shop_face", doc_type="info", body=query_body)
     return search_result["hits"]["hits"]
-
-
-
 
 
 def get_es(es_con:Elasticsearch, index_id):
     res = es_con.get(index="shop_face", doc_type="info", id=index_id)
-
     return res
 
 
 def delete_es(es_con):
     """
-
     :param es_con:
     :return:
     """
     pass
+
 
 def insert_es(es_con:Elasticsearch, index_id, body):
     """
@@ -55,6 +49,7 @@ def insert_es(es_con:Elasticsearch, index_id, body):
 
     res = es_con.index(index="shop_face", doc_type="info", id=index_id, body=body)
     return res
+
 
 def bulk_load():
     pass
@@ -73,7 +68,8 @@ def get_lat(dd):
     else:
         return dd.get("lat","0")
 
-if __name__ == '__main__':
+
+def maizi_lbs():
     # 建立连接 es version: 5.5.1
     host = [{"host": "172.16.2.159", "port": 9200}] # 需要使用列表的形式
     es = Elasticsearch(hosts=host)
@@ -83,7 +79,7 @@ if __name__ == '__main__':
 
     element_list = []
     location_distinct_list = []
-    with open('/Users/caosai/Desktop/lbs_all_distinct.txt') as f:
+    with open('/Users/caosai/Desktop/LBS/ll3.txt') as f:
         files = f.readlines()
         i = 0
 
@@ -150,6 +146,17 @@ if __name__ == '__main__':
         helpers.bulk(es, element_list)
         # print(element_list)
 
-            ######## 单条插入 ########
-            # insert_es(es_con=es, index_id=new_id, body=body)
-            # print("插入第 %d 条"%i)
+        ######## 单条插入 ########
+        # insert_es(es_con=es, index_id=new_id, body=body)
+        # print("插入第 %d 条"%i)
+
+
+if __name__ == '__main__':
+
+    # 建立连接 es version: 5.5.1
+    host = [{"host": "172.16.2.159", "port": 9200}] # 需要使用列表的形式
+    es = Elasticsearch(hosts=host)
+    # print(es.info()) # 需要加括号,否则不输出
+    res = get_es(es, 1)
+
+    print(res)
