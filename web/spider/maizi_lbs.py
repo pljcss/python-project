@@ -7,7 +7,7 @@ import random
 from spider import spider_utils
 import logging
 import logging.config
-
+import csv
 
 logging.config.fileConfig('log.ini')
 file_logger = logging.getLogger(name="fileLogger")
@@ -144,7 +144,68 @@ def get_all_content_from_baidu(keywords, region, page_size=20, page_num=0):
             f.write(str2)
 
 
+def write_csv(keywords, region, page_size=20, page_num=0):
+    ak = "dASz7ubuSpHidP1oQWKuAK3q" # 链家ak
+    url = "http://api.map.baidu.com/place/v2/search?" \
+          "query=%s&region=%s&output=json&scope=2&&ak=%s&page_size=%d&page_num=%d" \
+          %(keywords, region, ak, page_size, page_num)
 
+    res = None
+    try:
+        # 返回结果
+        res = requests.get(url)
+        # print(res.text)
+    except Exception as e:
+        file_logger.error("解析出错::: ", e)
+
+    if res is not None:
+        # 转成json
+        json_res = json.loads(res.text)
+
+        # 总页数
+        total_results = json_res.get("total", 0)
+        # print("总页数", total_results)
+        file_logger.info("当前解析%s:%s, 共%d页"%(region, keyword, total_results))
+
+        # 先查询出总页数, 然后分页查询
+        page_num = total_results / page_size
+
+        # 按页查询
+        str2 = ""
+        res_list = list()
+        for i in range(int(page_num)):
+            page_num = i
+            # print("第一页, ", page_num)
+            file_logger.info("爬取第%s页"%(page_num+1))
+
+            url = "http://api.map.baidu.com/place/v2/search?" \
+                  "query=%s&region=%s&output=json&scope=2&ak=%s&page_size=%d&page_num=%d&city_limit=true" \
+                  %(keywords, region, ak, page_size, page_num)
+
+            res = spider_utils.requests_utils(url)
+
+            if res is not None:
+                json_res = json.loads(res.text)
+                print(json_res)
+                try:
+                    for i in json_res["results"]:
+                        str1 = i.get("name","0") + "^" + "null^" + i.get("telephone","0") + "^" + i.get("address","0") + "^" + i.get("province","0") + "^" \
+                               + i.get("city","0") + "^" + i.get("area","0") + "^" + str(spider_utils.get_lng(i.get("location", "0"))) + "^" + str(spider_utils.get_lat(i.get("location", "0"))) + "^" \
+                               + "null^" + "null^" + "null"
+
+                        str2 = str2 + str1 + "\n"
+
+                        res_dict = {"name":i.get("name","0"), "address":i.get("address","0"), "contact":i.get("telephone","0")}
+                        res_list.append(res_dict)
+                except Exception as e:
+                    file_logger.error("报错了", e)
+
+        # 将结果保存到文件
+        with open("/Users/caosai/Desktop/lbs.csv", "a+") as f:
+            headers = ['name', 'address', 'contact']
+            f_csv = csv.DictWriter(f, headers)
+            f_csv.writerows(res_list)
+            # f.write(str2)
 
 def get_content_from_baidu(keywords, region, page_size=20, page_num=0):
     """
@@ -343,19 +404,19 @@ if __name__ == '__main__':
     hangzhou = ['杭州市西湖区']
     keywords_test = ['美容']
 
+    for region in hgxs_regions:
+        for keyword in keywords:
+            file_logger.info("begin: 爬取城市%s关键字%s"%(region, keyword))
+            # print(keyword)
+            write_csv(keyword, region)
+
+
+
     # for region in hangzhou:
     #     for keyword in keywords_test:
     #         file_logger.info("begin: 爬取城市%s关键字%s"%(region, keyword))
     #         # print(keyword)
-    #         get_all_content_from_baidu(keyword, region)
-
-
-
-    for region in hangzhou:
-        for keyword in keywords_test:
-            file_logger.info("begin: 爬取城市%s关键字%s"%(region, keyword))
-            # print(keyword)
-            geo_list = spider_utils.sub_rect_baidu()
-
-            for bounds in geo_list:
-                get_data_by_bounds(keyword, bounds)
+    #         geo_list = spider_utils.sub_rect_baidu()
+    #
+    #         for bounds in geo_list:
+    #             get_data_by_bounds(keyword, bounds)
