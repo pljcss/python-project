@@ -18,24 +18,42 @@ def requests_utils(url):
     :return:
     """
     # 动态加载 user_agent
-    user_agent = [
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36",
-        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36",
-        "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.94 Safari/537.36",
-        "Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19"
-    ]
+    # user_agent = [
+    #     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.157 Safari/537.36",
+    #     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36",
+    #     "Mozilla/5.0 (Windows NT 6.2; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/27.0.1453.94 Safari/537.36",
+    #     "Mozilla/5.0 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19"
+    # ]
+
+    user_agent = ["Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.1 Safari/605.1.15"]
 
     # 封装请求头
     headers = dict()
     headers['User-Agent'] = random.choice(user_agent)
-    # headers["Connection"] = "keep-alive"
-    headers["Connection"] = "close"
-    headers["Accept"] = "text/plain, */*; q=0.01"
+    headers["Connection"] = "keep-alive"
+    # headers["Connection"] = "close"
+    # headers["Accept"] = "text/plain, */*; q=0.01"
+    headers["Accept"] = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
     headers["Accept-Encoding"] = "gzip, deflate, br"
     headers["Accept-Language"] = "en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7"
-    # headers["HOST"] = "www.dianping.com"
-    # headers["Cookie"] = "xxx"
+    headers["Host"] = "www.dianping.com"
 
+    # headers["Referer"] = "http://www.dianping.com/shop/98440846"
+    # headers["X-Requested-With"] = "XMLHttpRequest"
+
+    # headers["Origin"] = "http://www.dianping.com"
+
+    # headers["Cookie"] = "s_ViewType=10; _lxsdk_cuid=16c8497049fc8-06b5f179e16f2a-38617706-fa000-16c8497049f7c; _lxsdk=16c8497049fc8-06b5f179e16f2a-38617706-fa000-16c8497049f7c; _hc.v=73305ac3-2ce0-dd8b-4f94-0abcc3c130cd.1565592585; _lxsdk_s=16c849704a2-56a-f51-096%7C%7C19"
+
+    # headers["Cookie"] = "_lxsdk_cuid=16aa0e13385c8-09565305c22591-37607604-232800-16aa0e13385c8; _lxsdk=16aa0e13385c8-09565305c22591-37607604-232800-16aa0e13385c8; _hc.v=2c408a18-4187-b4d2-0016-76ee91ea5b15.1557477275; Hm_lvt_e6f449471d3527d58c46e24efb4c343e=1557477275; cy=1; cye=shanghai; s_ViewType=10; _lx_utm=utm_source%3DBaidu%26utm_medium%3Dorganic; _lxsdk_s=16c849faad8-d0a-305-56d%7C%7C512"
+
+    # headers["Cookie"] = "_lxsdk_cuid=16c8524c06dc8-0fbfa373eef812-38617706-fa000-16c8524c06ec8;" \
+    #                     "_lxsdk=16c8524c06dc8-0fbfa373eef812-38617706-fa000-16c8524c06ec8;" \
+    #                     "_lxsdk_s=16c8524c071-661-79f-9eb%7C%7C1;" \
+    #                     "_hc.v=4f73dde6-e19c-aa5f-664d-293fffc68ba6.1565601874"
+
+
+    headers["Cookie"] = "cityid=1; cy=1; cye=shanghai; _lxsdk_s=16c85c4a76a-7cc-56-e61%7C%7C124; _hc.v=7509c902-6550-1fbc-56e7-1622d5263ab3.1565612353; _lxsdk=16c85c4a768c8-0ffb41473819238-3f616c4d-fa000-16c85c4a768c8; _lxsdk_cuid=16c85c4a768c8-0ffb41473819238-3f616c4d-fa000-16c85c4a768c8"
 
     # 该url可以测试 header 是否生效
     # print(requests.get("https://www.whatismybrowser.com/detect/what-http-headers-is-my-browser-sending", headers=headers).text)
@@ -44,7 +62,15 @@ def requests_utils(url):
 
     retry_times = 0
     while retry_times < 3:
-        proxies = [{'http': 'http://106.12.39.147:8899','https': 'http://106.12.39.147:8899'}]
+        # proxies = [{'http': 'http://106.12.39.147:8899','https': 'http://106.12.39.147:8899'}]
+
+        # 122.245.158.18 | 60.179.66.187 | 60.179.64.87 | 122.245.251.216 | 183.135.2.80 | 220.189.2.246
+        # 122.245.110.163
+        proxies = [{'http': 'http://122.245.110.163:32982','https': 'http://122.245.110.163:32982'}]
+
+
+
+
 
         # proxies = [{'http': 'http://106.12.39.147:8899','https': 'http://106.12.39.147:8899'},
         #            {'http': 'http://125.114.174.50:8888','https': 'http://125.114.174.50:8888'}]
@@ -56,8 +82,17 @@ def requests_utils(url):
         # print(retry_times)
         proxy_ip = random.choice(proxies)
         # print(proxy_ip)
+
+        cookie = [1]
         try:
-            response = requests.get(url, headers=headers, proxies=proxy_ip, timeout=1)
+            response = requests.get(url, headers=headers, proxies=proxy_ip, timeout=5)
+
+            # print(response.cookies)
+            print("-"*20)
+            print(response.headers)
+            print(response.request.headers)
+            print("-"*20)
+            # response = requests.get(url, headers=headers, timeout=100)
             return response
         except requests.exceptions.ConnectionError as e:
             retry_times = retry_times + 1
@@ -153,15 +188,24 @@ def sub_rect_baidu():
 
 
 if __name__ == '__main__':
-    # result = requests_utils("http://icanhazip.com")
+    result = requests_utils("http://icanhazip.com")
     # # result = requests_utils("http://www.baidu.com")
-    # if result is None:
-    #     print(result)
-    # else:
-    #     print(result.text)
+    if result is None:
+        print(result)
+    else:
+        print(result.text)
     # print(result.text)
 
-    ll = sub_rect_baidu()
+    # ll = sub_rect_baidu()
+    #
+    # print(len(ll))
 
-    print(len(ll))
+    # url = "http://www.dianping.com/search/keyword/1/0_美容医院"
+    # url = "http://www.dianping.com/shanghai/ch50/g183"
+    url = "http://www.dianping.com/shop/98440846"
+
+    # url = "http://m.dianping.com/beauty/book/bookphoneno/show?attachtype=0"
+    res = requests_utils(url)
+
+    print(res.text)
 
