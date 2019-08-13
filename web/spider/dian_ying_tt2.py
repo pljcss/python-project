@@ -3,7 +3,7 @@ from lxml import etree
 from bs4 import BeautifulSoup
 import sys
 import re
-from web.spider.dianyingtt import download
+from web.spider.dian_ying_tt import download
 
 # reload(sys)
 # sys.setdefaultencoding('utf-8')

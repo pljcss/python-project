@@ -4,16 +4,16 @@
 class Animal(object):
 
     def run(self):
-        print 'Animal is running...'
+        print('Animal is running...')
 
 # 定义子类 继承 Animal
 class Dog(Animal):
     # 方法重写
     def run(self):
-        print 'Dog is running...'
+        print('Dog is running...')
     # 子类添加新方法
     def eat(self):
-        print 'Dog eat meat..'
+        print('Dog eat meat..')
 
 # 定义子类 继承 Animal
 class Cat(Animal):
@@ -26,5 +26,5 @@ cat = Cat()
 dog.run()
 cat.run()
 
-print isinstance(dog, Dog) # True
-print isinstance(dog, Animal) # True
+print(isinstance(dog, Dog)) # True
+print(isinstance(dog, Animal)) # True
