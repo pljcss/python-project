@@ -5,11 +5,14 @@ import time
 from bs4 import BeautifulSoup
 import random
 import time
-
+import datetime
+import os
+import socket
 import logging
-import logging.config
-logging.config.fileConfig('log.ini')
 
+import logging.config
+
+logging.config.fileConfig('log.ini')
 
 def requests_utils(url):
     """
@@ -270,62 +273,75 @@ def requests_dianping2(url):
         'cityid': '1',
         'cy': '1',
         'cye': 'shanghai',
-        '_lxsdk_s': '16c8a77a039-155-fc2-94e%7C%7C' + incre_value2,
+        # '_lxsdk_s': '16c8ee18d0b-af3-e43-aec%7C%7C' + incre_value2,
+        '_lxsdk_s': '16c8f9683e2-3ad-e9c-532%7C%7C' + incre_value2,
+        # 16c8f52a0be-3-89d-f61%7C%7C10
         's_ViewType': '10',
-        '_hc.v': 'a31cc9e4-e038-f8fb-686f-00f08c972906.1565680731',
-        '_lxsdk': '16c89d80035c8-00633b53efe6478-3f616c4d-fa000-16c89d80036c8',
-        '_lxsdk_cuid': '16c8524c06dc8-0fbfa373eef812-38617706-fa000-16c8524c06ec8',
-        # '_lxsdk_cuid': '16c8526c06dc8-0fbfa373eef812-38617706-fa000-16c8524c06ec8',
+        '_hc.v': 'ccf4c4c1-f8b1-1084-e507-91fd9af023d3.1565777109',
+        # 25635510-2672-561a-5658-3dd380ba2dbd.1565772653
+        '_lxsdk': '16c8f96a0e4c8-00042c829b81f28-3f616c4d-fa000-16c8f96a0e484',
+        # 16c8f52a0bbb-0d9a27cc52c9c5-3f616c4d-fa000-16c8f52a0bcc8
+        '_lxsdk_cuid': '16c8f96a0e4c8-00042c829b81f28-3f616c4d-fa000-16c8f96a0e484',
         '_lx_utm': 'utm_source%3DBaidu%26utm_medium%3Dorganic',
+        # utm_source%3DBaidu%26utm_medium%3Dorganic
         'cy': '1',
         'cye': 'shanghai',
         # 'aburl': '1'
     }
 
-    # _lxsdk_cuid=; _lxsdk=16c8524c06dc8-0fbfa373eef812-38617706-fa000-16c8524c06ec8; _hc.v=4f73dde6-e19c-aa5f-664d-293fffc68ba6.1565601874; cy=1; cye=shanghai; s_ViewType=10; aburl=1; _lxsdk_s=16c8a97ac85-faa-9b0-72%7C%7C6
 
-    retry_times = 0
-    while retry_times < 3:
-        # proxies = [{'http': 'http://106.12.39.147:8899','https': 'http://106.12.39.147:8899'}]
+    # 获取最新的IP地址
+    with open("ip_proxy") as f:
+        all_ip = f.readlines()
+        new_ip = all_ip[-1].strip()
 
-        # 122.245.158.18 | 60.179.66.187 | 60.179.64.87 | 122.245.251.216 | 183.135.2.80 | 220.189.2.246
-        # 122.245.110.163 | 115.217.44.148 | 122.245.157.228 | 183.135.2.12 | 115.213.25.214 | 122.246.251.0
-        # 122.245.156.30 | 60.178.217.81 | 60.178.216.118 | 122.245.111.242 | 122.245.250.225 | 122.245.250.225
-        # 115.217.47.91 | 60.179.66.26 | 122.246.250.171 | 183.135.84.208 | 125.116.191.69 | 183.135.4.74
-        # 60.178.216.40 | 122.245.152.122 | 60.178.91.225 | 60.178.216.158 | 122.245.154.22 | 183.135.7.185
-        proxies = [{'http': 'http://115.213.57.162:32982','https': 'http://115.213.57.162:32982'}]
+        ip_res = test_ip(new_ip)
 
-        proxy_ip = random.choice(proxies)
+        if ip_res !=0:
+            print("该IP无效重试 ", new_ip)
+            change_ip()
+            requests_dianping2(url)
+        else:
+            print("该IP有效 ", new_ip)
+            retry_times = 0
+            while retry_times < 3:
+                # proxies = [{'http': 'http://106.12.39.147:8899','https': 'http://106.12.39.147:8899'}]
 
-        try:
-            # 休眠
-            # sleep_time = random.uniform(3, 9)
-            # print("休眠", sleep_time)
-            # time.sleep(sleep_time)
+                ip_dict = {
+                    'http': 'http://%s:32982'% new_ip,
+                    'https': 'http://%s:32982'% new_ip
+                }
+                # proxies = [{'http': 'http://115.217.47.39:32982','https': 'http://115.217.47.39:32982'}]
+                proxies = [ip_dict]
+                proxy_ip = random.choice(proxies)
 
-            # sleep_time = random.uniform(3, 5)
-            # print("休眠", sleep_time)
-            # time.sleep(sleep_time)
+                print(proxy_ip)
+                try:
+                    # 休眠
+                    # sleep_time = random.uniform(3, 9)
+                    # print("休眠", sleep_time)
+                    # time.sleep(sleep_time)
 
+                    sleep_time = random.uniform(2, 4)
+                    print("休眠", sleep_time)
+                    time.sleep(sleep_time)
 
-            response = requests.get(url, headers=headers, proxies=proxy_ip, timeout=10, cookies=cookies)
+                    response = requests.get(url, headers=headers, proxies=proxy_ip, timeout=10, cookies=cookies)
+                    # response = requests.get(url, headers=headers,  timeout=10, cookies=cookies)
 
-            # response = requests.get(url, headers=headers,  timeout=10, cookies=cookies)
-
-            # print(response.cookies)
-            print("-"*20)
-            print(response.headers)
-            print(response.request.headers)
-            print("-"*20)
-            return response
-        except requests.exceptions.ConnectionError as e:
-            retry_times = retry_times + 1
-            # print("重试第%d"%retry_times,"报错了", e)
-        except requests.exceptions.ReadTimeout as e:
-            retry_times = retry_times + 1
-            # print("重试第%d"%retry_times,"报错了", e)
-
-    return None
+                    # print(response.cookies)
+                    # print("-"*20)
+                    # print(response.headers)
+                    # print(response.request.headers)
+                    # print("-"*20)
+                    return response
+                except requests.exceptions.ConnectionError as e:
+                    retry_times = retry_times + 1
+                    # print("重试第%d"%retry_times,"报错了", e)
+                except requests.exceptions.ReadTimeout as e:
+                    retry_times = retry_times + 1
+                    # print("重试第%d"%retry_times,"报错了", e)
+            return None
 
 def get_lng(dd):
     if dd == "0":
@@ -333,13 +349,11 @@ def get_lng(dd):
     else:
         return dd.get("lng","0")
 
-
 def get_lat(dd):
     if dd == "0":
         return dd
     else:
         return dd.get("lat","0")
-
 
 def sub_rect_baidu():
 
@@ -401,11 +415,48 @@ def sub_rect_baidu():
 
     return geo_list
 
+def change_ip():
+    start_time = datetime.datetime.now()
+    command_linux = "ssh root@122.227.184.61 -p20073 'sh restart_pp.sh'"
+    str1 = os.popen(command_linux)
+    res_ip = str1.read()
+    end_time = datetime.datetime.now()
+
+    cost_time = end_time - start_time
+
+    with open("ip_proxy") as f_r:
+        # ip_gen = "60.178.91.229"
+        all_ip = f_r.read()
+        #
+        if all_ip.find(res_ip) == -1:
+            with open("ip_proxy", "a+") as f_w:
+                f_w.write(res_ip)
+                print("更换IP,耗时", cost_time, res_ip)
+                return res_ip
+        else:
+            with open("ip_proxy", "a+") as f_w:
+                f_w.write("重复IP: " + res_ip)
+            change_ip()
+
+def test_ip(ip_address):
+    """
+    测试该 IP + Port 是否有效
+    :return: 0代表有效
+    """
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.settimeout(1)
+    ip_result = sock.connect_ex((ip_address, 32982))
+    # if ip_result == 0:
+    #     print("Port is open")
+    # else:
+    #     print("Port is not open")
+
+    return ip_result
 
 
 if __name__ == '__main__':
-    # result = requests_dianping("http://icanhazip.com")
-    # # # result = requests_utils("http://www.baidu.com")
+    # change_ip()
+    # result = requests_dianping2("http://icanhazip.com")
     # if result is None:
     #     print(result)
     # else:
@@ -422,8 +473,7 @@ if __name__ == '__main__':
 
     # url = "http://m.dianping.com/beauty/book/bookphoneno/show?attachtype=0"
 
-    url = "http://www.dianping.com/shop/126746440"
+    # url = "http://www.dianping.com/shop/126746440"
+    url = "http://www.dianping.com/shop/93764773"
     res = requests_dianping2(url)
-
     print(res.text)
-
