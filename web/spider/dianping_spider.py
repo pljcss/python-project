@@ -4,6 +4,7 @@ from spider import spider_utils
 import logging.config
 import re
 import requests
+from selenium import webdriver
 
 logging.config.fileConfig('log.ini')
 file_logger = logging.getLogger(name="fileLogger")
@@ -202,6 +203,11 @@ def parse_dianping_url2(url2):
         # 检测IP是否被封
         if counter_none == 4:
             print("IP被封, 需更换IP")
+            # selenium
+            driver = webdriver.Chrome()
+            driver.get(url)
+            print(driver.get_cookies())
+
             spider_utils.change_ip()
             print("重新执行该方法")
             parse_dianping_url2(url)
