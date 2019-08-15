@@ -1,37 +1,13 @@
 from selenium import webdriver
-# from selenium.webdriver.common.keys import Keys
-# from selenium.common.exceptions import TimeoutException
-#
-# from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-# from selenium.webdriver.support.ui import WebDriverWait
-# import time
+from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import TimeoutException
+
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from selenium.webdriver.support.ui import WebDriverWait
+import time
 
 
-def auto_search():
-    """
-    自动搜索
-    :return:
-    """
-    driver = webdriver.Chrome()
 
-    url = "http://www.dianping.com"
-    # url = "https://www.baidu.com/"
-    driver.get(url)
-
-    # 获取页面元素
-    print(driver.page_source)
-
-    # 获取 cookies
-    cookies = driver.get_cookies()
-    print(cookies)
-
-    # 搜索
-    elem = driver.find_element_by_id('J-search-input')
-    elem.clear()
-    elem.send_keys("火锅")
-    elem.send_keys(Keys.RETURN)
-
-    # driver.close()
 
 def no_delay_output():
     """
@@ -124,4 +100,6 @@ if __name__ == '__main__':
     # auto_search()
 
     # test("http://www.dianping.com/shop/2767525")
-    test("http://www.baidu.com")
+    # test("http://www.baidu.com")
+
+    pass
