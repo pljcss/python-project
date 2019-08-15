@@ -301,8 +301,10 @@ def requests_dianping2(url):
         all_ip = f.readlines()
         new_ip = all_ip[-1].strip()
 
-        ip_res = test_ip(new_ip)
+        if new_ip.find("重复IP") == 0:
+            change_ip()
 
+        ip_res = test_ip(new_ip)
         cookies = eval(str(all_ip[1]).strip("\n"))
         cookies['_lxsdk_s'] = str(cookies['_lxsdk_s'])[:-1] + str(incre_value2)
         print("cookies-----", cookies)
@@ -486,7 +488,7 @@ def test_ip(ip_address):
     :return: 0代表有效
     """
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.settimeout(1)
+    sock.settimeout(3)
     ip_result = sock.connect_ex((ip_address, 32982))
     # if ip_result == 0:
     #     print("Port is open")
@@ -516,8 +518,8 @@ if __name__ == '__main__':
     # url = "http://m.dianping.com/beauty/book/bookphoneno/show?attachtype=0"
 
     # url = "http://www.dianping.com/shop/126746440"
-    url = "http://www.dianping.com/shop/93764773"
-    res = requests_dianping2(url)
-    print(res.text)
+    # url = "http://www.dianping.com/shop/93764773"
+    # res = requests_dianping2(url)
+    # print(res.text)
 
-    # change_ip_cookies(url)
+    print(test_ip("115.217.45.0"))

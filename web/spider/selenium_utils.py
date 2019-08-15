@@ -46,6 +46,7 @@ def no_delay_cookies(url):
     # 静默模式
     option = webdriver.ChromeOptions()
     option.add_argument('headless')
+    option.add_experimental_option('excludeSwitches', ['enable-automation'])
     # 启动浏览器
     driver = webdriver.Chrome(options=option)
     # driver = webdriver.Chrome()

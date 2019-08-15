@@ -32,7 +32,9 @@ def auto_search():
 
 if __name__ == '__main__':
     # auto_search()
-
+    # options = webdriver.ChromeOptions()
+    # options.add_experimental_option('excludeSwitches', ['enable-automation'])
+    # driver = webdriver.Chrome(options=options)
     driver = webdriver.Chrome()
 
     url = "http://www.dianping.com"

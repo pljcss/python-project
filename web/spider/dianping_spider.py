@@ -269,6 +269,7 @@ if __name__ == '__main__':
 
             if last_one == url:
                 flag = True
+                continue
 
             if flag is True:
                 print("开始解析第%d行, %s"%(counter, url))

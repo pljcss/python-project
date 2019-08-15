@@ -102,6 +102,15 @@ if __name__ == '__main__':
     }
 
 
-    print(cookies)
+    with open("ip_proxy") as f:
+        all_ip = f.readlines()
+        new_ip = all_ip[-1].strip()
+        print("108   ", new_ip)
+        if new_ip.find("重复IP") == 0:
+            print("sssss")
+        # ip_res = test_ip(new_ip)
 
-    print("222".isdigit())
+        # cookies = eval(str(all_ip[1]).strip("\n"))
+        # cookies['_lxsdk_s'] = str(cookies['_lxsdk_s'])[:-1] + str(incre_value2)
+        # print("cookies-----", cookies)
+        # print(cookies['_lxsdk_s'])
