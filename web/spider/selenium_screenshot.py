@@ -29,5 +29,5 @@ if __name__ == '__main__':
 
 
     # 截图
-    driver.save_screenshot("codingpy.png")
-    driver.close()
+    # driver.save_screenshot("codingpy.png")
+    # driver.close()

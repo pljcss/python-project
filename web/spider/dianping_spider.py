@@ -1,6 +1,6 @@
 # -*- coding:utf-8 -*-
 from bs4 import BeautifulSoup
-from spider import spider_utils
+from spider import spider_utils, selenium_utils
 import logging.config
 import re
 import requests
@@ -109,10 +109,10 @@ def parse_dianping_url():
             stars_str = soup.find("div", attrs={"class":"brief-info"}).find_all("span")[0]
 
             print(stars_str)
-            str_digtial = re.findall(r"\d+\.?\d*",str(stars_str).strip())[0]
-            print(str_digtial)
+            str_digital = re.findall(r"\d+\.?\d*",str(stars_str).strip())[0]
+            print(str_digital)
             #
-            # print(hospital_name, address, tel, str_digtial)
+            # print(hospital_name, address, tel, str_digital)
 
 
 
@@ -157,7 +157,6 @@ def parse_dianping_url2(url2):
 
     if response is not None:
         soup = BeautifulSoup(response.text, features="lxml")
-
         # print(response.text)
 
         # 如果counter_none 值为4,则说明IP被封,需更换IP
@@ -192,10 +191,10 @@ def parse_dianping_url2(url2):
             print(e)
 
         # 星级
-        str_digtial = ""
+        str_digital = ""
         try:
             stars_str = soup.find("div", attrs={"class":"brief-info"}).find_all("span")[0]
-            str_digtial = re.findall(r"\d+\.?\d*",str(stars_str).strip())[0]
+            str_digital = re.findall(r"\d+\.?\d*",str(stars_str).strip())[0]
         except Exception as e:
             counter_none += 1
             print(e)
@@ -204,16 +203,16 @@ def parse_dianping_url2(url2):
         if counter_none == 4:
             print("IP被封, 需更换IP")
             # selenium
-            driver = webdriver.Chrome()
-            driver.get(url)
-            print(driver.get_cookies())
+            # cookies = selenium_utils.no_delay_cookies(url)
+            # print(cookies)
 
-            spider_utils.change_ip()
+            spider_utils.change_ip_cookies(url2)
+            # spider_utils.change_ip()
             print("重新执行该方法")
-            parse_dianping_url2(url)
+            parse_dianping_url2(url2)
         else:
-            str2 = url2 + "^" + hospital_name + "^" + address + "^" + tel + "^" + str_digtial
-            print(hospital_name, address, tel, str_digtial)
+            str2 = url2 + "^" + hospital_name + "^" + address + "^" + tel + "^" + str_digital
+            print(hospital_name, address, tel, str_digital)
 
             with open("dianping_data_yangpu_spa.txt", "a+") as f:
                 f.write(str2 + "\n")
@@ -258,17 +257,26 @@ if __name__ == '__main__':
     ########### 1、将url写入文件 ###############
 
     with open("url_all.txt") as f:
+
+        last_one = ""
+        with open("dianping_data_yangpu_spa.txt") as f2:
+            last_one = f2.readlines()[-1].split('^')[0]
+
         counter = 1
+        flag = False
         for line in f.readlines():
             url = line.strip()
 
-            print("开始解析第%d行, %s"%(counter, url))
-            parse_dianping_url2(url)
-            # print(url)
-            if counter%50 == 0:
-                print("切换")
-                spider_utils.change_ip()
-            print("结束解析----------" + '\n')
+            if last_one == url:
+                flag = True
 
-            counter +=1
+            if flag is True:
+                print("开始解析第%d行, %s"%(counter, url))
+                parse_dianping_url2(url)
+                # print(url)
+                if counter%50 == 0:
+                    print("切换")
+                    spider_utils.change_ip()
+                print("结束解析----------" + '\n')
 
+                counter +=1

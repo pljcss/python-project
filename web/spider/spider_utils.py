@@ -8,8 +8,9 @@ import time
 import datetime
 import os
 import socket
-import logging
+from spider import selenium_utils
 
+import logging
 import logging.config
 
 logging.config.fileConfig('log.ini')
@@ -267,27 +268,32 @@ def requests_dianping2(url):
     with open('incre_cookid_detail') as f1:
         incre_value2 = f1.read()
     with open('incre_cookid_detail', 'w') as f:
-        f.write(str(int(incre_value2) + 2))
+        if incre_value2.isdigit():
+            f.write(str(int(incre_value2) + 3))
+        else:
+            f.write(str(5))
 
-    cookies = {
-        'cityid': '1',
-        'cy': '1',
-        'cye': 'shanghai',
-        # '_lxsdk_s': '16c8ee18d0b-af3-e43-aec%7C%7C' + incre_value2,
-        '_lxsdk_s': '16c8f9683e2-3ad-e9c-532%7C%7C' + incre_value2,
-        # 16c8f52a0be-3-89d-f61%7C%7C10
-        's_ViewType': '10',
-        '_hc.v': 'ccf4c4c1-f8b1-1084-e507-91fd9af023d3.1565777109',
-        # 25635510-2672-561a-5658-3dd380ba2dbd.1565772653
-        '_lxsdk': '16c8f96a0e4c8-00042c829b81f28-3f616c4d-fa000-16c8f96a0e484',
-        # 16c8f52a0bbb-0d9a27cc52c9c5-3f616c4d-fa000-16c8f52a0bcc8
-        '_lxsdk_cuid': '16c8f96a0e4c8-00042c829b81f28-3f616c4d-fa000-16c8f96a0e484',
-        '_lx_utm': 'utm_source%3DBaidu%26utm_medium%3Dorganic',
-        # utm_source%3DBaidu%26utm_medium%3Dorganic
-        'cy': '1',
-        'cye': 'shanghai',
-        # 'aburl': '1'
-    }
+    # cookies = {
+    #     'cityid': '1',
+    #     'cy': '1',
+    #     'cye': 'shanghai',
+    #     # '_lxsdk_s': '16c8ee18d0b-af3-e43-aec%7C%7C' + incre_value2,
+    #     '_lxsdk_s': '16c8f9683e2-3ad-e9c-532%7C%7C' + incre_value2,
+    #     # 16c8f52a0be-3-89d-f61%7C%7C10
+    #     's_ViewType': '10',
+    #     '_hc.v': 'ccf4c4c1-f8b1-1084-e507-91fd9af023d3.1565777109',
+    #     # 25635510-2672-561a-5658-3dd380ba2dbd.1565772653
+    #     '_lxsdk': '16c8f96a0e4c8-00042c829b81f28-3f616c4d-fa000-16c8f96a0e484',
+    #     # 16c8f52a0bbb-0d9a27cc52c9c5-3f616c4d-fa000-16c8f52a0bcc8
+    #     '_lxsdk_cuid': '16c8f96a0e4c8-00042c829b81f28-3f616c4d-fa000-16c8f96a0e484',
+    #     '_lx_utm': 'utm_source%3DBaidu%26utm_medium%3Dorganic',
+    #     # utm_source%3DBaidu%26utm_medium%3Dorganic
+    #     'cy': '1',
+    #     'cye': 'shanghai',
+    #     # 'aburl': '1'
+    # }
+
+    # cookies = {'_lxsdk_s': '16c92f80f4a-de8-0ec-d09%7C%7C1', '_hc.v': '8d075aa4-9b5c-9731-6aa6-a14a4fcb663b.1565833827', '_lxsdk_cuid': '16c92f80f48c8-07bc01b67895d4-38617706-fa000-16c92f80f48c8', '_lxsdk': '16c92f80f48c8-07bc01b67895d4-38617706-fa000-16c92f80f48c8', 'cye': 'shanghai', 'cityid': '1', 'cy': '1'}
 
 
     # 获取最新的IP地址
@@ -296,6 +302,11 @@ def requests_dianping2(url):
         new_ip = all_ip[-1].strip()
 
         ip_res = test_ip(new_ip)
+
+        cookies = eval(str(all_ip[1]).strip("\n"))
+        cookies['_lxsdk_s'] = str(cookies['_lxsdk_s'])[:-1] + str(incre_value2)
+        print("cookies-----", cookies)
+        print(cookies['_lxsdk_s'])
 
         if ip_res !=0:
             print("该IP无效重试 ", new_ip)
@@ -322,18 +333,20 @@ def requests_dianping2(url):
                     # print("休眠", sleep_time)
                     # time.sleep(sleep_time)
 
-                    sleep_time = random.uniform(2, 4)
-                    print("休眠", sleep_time)
-                    time.sleep(sleep_time)
+                    # sleep_time = random.uniform(2, 4)
+                    # print("休眠", sleep_time)
+                    # time.sleep(sleep_time)
 
+                    print("---335555---", cookies)
                     response = requests.get(url, headers=headers, proxies=proxy_ip, timeout=10, cookies=cookies)
+                    # response = requests.get(url, headers=headers, proxies=proxy_ip, timeout=10, cookies={"a1":"11"})
                     # response = requests.get(url, headers=headers,  timeout=10, cookies=cookies)
 
                     # print(response.cookies)
-                    # print("-"*20)
-                    # print(response.headers)
-                    # print(response.request.headers)
-                    # print("-"*20)
+                    print("-"*20)
+                    print(response.headers)
+                    print(response.request.headers)
+                    print("-"*20)
                     return response
                 except requests.exceptions.ConnectionError as e:
                     retry_times = retry_times + 1
@@ -438,6 +451,35 @@ def change_ip():
                 f_w.write("重复IP: " + res_ip)
             change_ip()
 
+def change_ip_cookies(url_t):
+    start_time = datetime.datetime.now()
+
+    # 切换IP并解析
+    command_linux = "ssh root@122.227.184.61 -p20073 'sh restart_pp.sh'"
+    str1 = os.popen(command_linux)
+    res_ip = str1.read()
+
+    # 耗时
+    end_time = datetime.datetime.now()
+    cost_time = end_time - start_time
+
+    # 生成cookies
+    cookies = selenium_utils.no_delay_cookies(url_t)
+
+    # 新生成的IP和Cookie写入文件
+    with open("ip_proxy", "r+") as f_r:
+        # ip_gen = "60.178.91.229"
+        all_content = f_r.read()
+        #
+        if all_content.find(res_ip) == -1:
+            f_r.seek(0, 0) # get to the first position
+            f_r.write(str(cookies).rstrip("\r\n") + "\n" + all_content + str(res_ip))
+            print("更换IP Cookie,耗时", cost_time, res_ip, cookies)
+            return res_ip
+        else:
+            f_r.write("\n" + "重复IP: " + res_ip)
+            change_ip()
+
 def test_ip(ip_address):
     """
     测试该 IP + Port 是否有效
@@ -477,3 +519,5 @@ if __name__ == '__main__':
     url = "http://www.dianping.com/shop/93764773"
     res = requests_dianping2(url)
     print(res.text)
+
+    # change_ip_cookies(url)

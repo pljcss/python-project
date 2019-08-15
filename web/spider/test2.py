@@ -72,25 +72,36 @@ if __name__ == '__main__':
     #            'Accept-Language':'zh-CN,zh;q=0.8',
     #            }
 
+    str1 = "16c92f80f4a-de8-0ec-d09%7C%7C0"
 
-    user_agent = ["Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.1 Safari/605.1.15"]
+    # print(str1[str1.rindex('C') + 1:])
 
-    # 封装请求头
-    headers = dict()
-    headers['User-Agent'] = random.choice(user_agent)
-    headers["Connection"] = "keep-alive"
-    # headers["Connection"] = "close"
-    # headers["Accept"] = "text/plain, */*; q=0.01"
-    headers["Accept"] = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
-    headers["Accept-Encoding"] = "gzip, deflate, br"
-    headers["Accept-Language"] = "en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7"
-    headers["Host"] = "www.dianping.com"
+    increase_int = str1[(int(str1.rindex('%')) + 1):]
 
-    headers["Referer"] = "http://www.dianping.com/shop/98440846"
-    headers["X-Requested-With"] = "XMLHttpRequest"
+    print(increase_int)
 
-    headers["Origin"] = "http://www.dianping.com"
-    s = requests.Session()
-    req = s.get(url=url,headers=headers)
-    print(s.cookies)
 
+    cookies = {
+        'cityid': '1',
+        'cy': '1',
+        'cye': 'shanghai',
+        # '_lxsdk_s': '16c8ee18d0b-af3-e43-aec%7C%7C' + incre_value2,
+        '_lxsdk_s': '16c8f9683e2-3ad-e9c-532%7C%7C',
+        # 16c8f52a0be-3-89d-f61%7C%7C10
+        's_ViewType': '10',
+        '_hc.v': 'ccf4c4c1-f8b1-1084-e507-91fd9af023d3.1565777109',
+        # 25635510-2672-561a-5658-3dd380ba2dbd.1565772653
+        '_lxsdk': '16c8f96a0e4c8-00042c829b81f28-3f616c4d-fa000-16c8f96a0e484',
+        # 16c8f52a0bbb-0d9a27cc52c9c5-3f616c4d-fa000-16c8f52a0bcc8
+        '_lxsdk_cuid': '16c8f96a0e4c8-00042c829b81f28-3f616c4d-fa000-16c8f96a0e484',
+        '_lx_utm': 'utm_source%3DBaidu%26utm_medium%3Dorganic',
+        # utm_source%3DBaidu%26utm_medium%3Dorganic
+        'cy': '1',
+        'cye': 'shanghai',
+        # 'aburl': '1'
+    }
+
+
+    print(cookies)
+
+    print("222".isdigit())
