@@ -32,17 +32,21 @@ def auto_search():
 
 if __name__ == '__main__':
     # auto_search()
-    # options = webdriver.ChromeOptions()
-    # options.add_experimental_option('excludeSwitches', ['enable-automation'])
-    # driver = webdriver.Chrome(options=options)
-    driver = webdriver.Chrome()
+    options = webdriver.ChromeOptions()
+    options.add_experimental_option('excludeSwitches', ['enable-automation'])
+    driver = webdriver.Chrome(options=options)
+    # driver = webdriver.Chrome()
 
     url = "http://www.dianping.com"
     # url = "https://www.baidu.com/"
+    url = "http://www.dianping.com/shop/114505006"
     driver.get(url)
 
     # 获取页面元素
-    print(driver.page_source)
+    all_page_source = driver.page_source
+    print(all_page_source)
+
+    print("sssssss", all_page_source.find("地址不对"))
 
     # 获取 cookies
     cookies = driver.get_cookies()

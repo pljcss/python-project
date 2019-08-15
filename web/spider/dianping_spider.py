@@ -5,6 +5,7 @@ import logging.config
 import re
 import requests
 from selenium import webdriver
+import os
 
 logging.config.fileConfig('log.ini')
 file_logger = logging.getLogger(name="fileLogger")
@@ -155,7 +156,7 @@ def parse_dianping_url2(url2):
     """
     response = spider_utils.requests_dianping2(url2)
 
-    if response is not None:
+    if response is not None and response.text.find("地址不对") == -1:
         soup = BeautifulSoup(response.text, features="lxml")
         # print(response.text)
 
@@ -201,7 +202,7 @@ def parse_dianping_url2(url2):
 
         # 检测IP是否被封
         if counter_none == 4:
-            print("IP被封, 需更换IP")
+            print("IP-Cookie失效, 更换....")
             # selenium
             # cookies = selenium_utils.no_delay_cookies(url)
             # print(cookies)
@@ -219,19 +220,17 @@ def parse_dianping_url2(url2):
 
 def get_all_page_links():
 
-    # http://www.dianping.com/shanghai/ch50/g158r2
-    # http://www.dianping.com/shanghai/ch50/g158r2p2?cpt=108313095%2C4701299
-    # http://www.dianping.com/shanghai/ch50/g158r2p50?cpt=108313095%2C4701299
-    # http://www.dianping.com/shanghai/ch50/g158r10
-    # http://www.dianping.com/shanghai/ch50/g158r10p2?cpt=23925672
-    # http://www.dianping.com/shanghai/ch50/g158r10p46?cpt=23925672
-    url_start = "http://www.dianping.com/shanghai/ch50/g158r10"
+    # http://www.dianping.com/shanghai/ch50/g158r6
+    # http://www.dianping.com/shanghai/ch50/g158r6p2
+    # http://www.dianping.com/shanghai/ch50/g158r6p50
+
+    url_start = "http://www.dianping.com/shanghai/ch50/g158r6"
     url_list = list()
     url_list.append(url_start)
 
-    for i in range(46):
+    for i in range(50):
         if i > 0:
-            url_former = "http://www.dianping.com/shanghai/ch50/g158r10p" + str(i+1) + "?cpt=23925672"
+            url_former = "http://www.dianping.com/shanghai/ch50/g158r6p" + str(i+1) + "?cpt=23925672"
             url_list.append(url_former)
 
     return url_list
@@ -254,13 +253,18 @@ if __name__ == '__main__':
     #
     # with open("url_all.txt", "a+") as f:
     #     f.write(str1)
-    ########### 1、将url写入文件 ###############
 
+    ########### 1、将url写入文件 ###############
     with open("url_all.txt") as f:
 
+
+        file_path = "dianping_data_huangpu_spa.txt"
+
         last_one = ""
-        with open("dianping_data_yangpu_spa.txt") as f2:
-            last_one = f2.readlines()[-1].split('^')[0]
+        if os.path.exists(file_path):
+            with open(file_path) as f2:
+                last_one = f2.readlines()[-1].split('^')[0]
+
 
         counter = 1
         flag = False
@@ -271,7 +275,7 @@ if __name__ == '__main__':
                 flag = True
                 continue
 
-            if flag is True:
+            if flag is True or last_one == "":
                 print("开始解析第%d行, %s"%(counter, url))
                 parse_dianping_url2(url)
                 # print(url)
@@ -281,3 +285,4 @@ if __name__ == '__main__':
                 print("结束解析----------" + '\n')
 
                 counter +=1
+    ########### 1、将url写入文件 ###############

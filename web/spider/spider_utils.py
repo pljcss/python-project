@@ -298,11 +298,17 @@ def requests_dianping2(url):
 
     # 获取最新的IP地址
     with open("ip_proxy") as f:
-        all_ip = f.readlines()
+
+        all_ip = ""
+        try:
+            all_ip = f.readlines()
+        except Exception as e:
+            print(e)
+
         new_ip = all_ip[-1].strip()
 
         if new_ip.find("重复IP") == 0:
-            change_ip()
+            new_ip = change_ip()
 
         ip_res = test_ip(new_ip)
         cookies = eval(str(all_ip[1]).strip("\n"))
@@ -487,9 +493,14 @@ def test_ip(ip_address):
     测试该 IP + Port 是否有效
     :return: 0代表有效
     """
+    print("490,测试IP", ip_address)
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.settimeout(3)
-    ip_result = sock.connect_ex((ip_address, 32982))
+    try:
+        ip_result = sock.connect_ex((ip_address, 32982))
+    except Exception as e:
+        ip_result = -1
+        print(e)
     # if ip_result == 0:
     #     print("Port is open")
     # else:
