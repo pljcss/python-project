@@ -31,11 +31,15 @@ def ex1(x):
 
 
 if __name__ == '__main__':
-    url = 'http://www.dianping.com/'
-
-    t = ex1(2)
-
-    print(t)
+    # url = 'http://www.dianping.com/'
+    #
+    # t = ex1(2)
+    #
+    # print(t)
     #
     # t = ex(5)
     # print(t)
+
+    with open("url_all.txt") as f:
+        for i in f.readlines():
+            print(i.strip().split('^')[3])

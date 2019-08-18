@@ -443,7 +443,7 @@ def sub_rect_baidu():
 
 def change_ip():
     start_time = datetime.datetime.now()
-    command_linux = "ssh root@122.227.184.61 -p20073 'sh restart_pp.sh'"
+    command_linux = "ssh root@58.211.138.89 -p20011 'sh restart_pp.sh'"
     str1 = os.popen(command_linux)
     res_ip = str1.read()
     end_time = datetime.datetime.now()
@@ -468,7 +468,7 @@ def change_ip_cookies(url_t):
     start_time = datetime.datetime.now()
 
     # 切换IP并解析
-    command_linux = "ssh root@122.227.184.61 -p20073 'sh restart_pp.sh'"
+    command_linux = "ssh root@58.211.138.89 -p20011 'sh restart_pp.sh'"
     str1 = os.popen(command_linux)
     res_ip = str1.read()
 
@@ -480,18 +480,24 @@ def change_ip_cookies(url_t):
     cookies = selenium_utils.no_delay_cookies(url_t)
 
     # 新生成的IP和Cookie写入文件
+    repeat_flag = False
     with open("ip_proxy", "r+") as f_r:
         # ip_gen = "60.178.91.229"
         all_content = f_r.read()
         #
         if all_content.find(res_ip) == -1:
             f_r.seek(0, 0) # get to the first position
-            f_r.write(str(cookies).rstrip("\r\n") + "\n" + all_content + str(res_ip) + "\n")
+            f_r.write(str(cookies).rstrip("\r\n") + "\n" + all_content + str(res_ip))
             print("更换IP Cookie,耗时", cost_time, res_ip, cookies)
             return res_ip
         else:
-            f_r.write("重复IP: " + res_ip + "\n")
-            change_ip()
+            print("重复IP: " + res_ip)
+            f_r.write("重复IP: " + res_ip)
+            repeat_flag = True
+
+    # 如果重复则更换IP
+    if repeat_flag is True:
+        change_ip()
 
 def test_ip(ip_address):
     """
@@ -515,7 +521,7 @@ def test_ip(ip_address):
 
 
 if __name__ == '__main__':
-    # change_ip()
+    change_ip_cookies('http://www.dianping.com/shop/130069735')
     # result = requests_dianping2("http://icanhazip.com")
     # if result is None:
     #     print(result)
@@ -534,8 +540,8 @@ if __name__ == '__main__':
     # url = "http://m.dianping.com/beauty/book/bookphoneno/show?attachtype=0"
 
     # url = "http://www.dianping.com/shop/126746440"
-    url = "http://www.dianping.com/shop/110281977"
-    res = requests_dianping2(url)
-    print(res.text)
+    # url = "http://www.dianping.com/shop/110281977"
+    # res = requests_dianping2(url)
+    # print(res.text)
 
     # print(test_ip("115.217.45.0"))

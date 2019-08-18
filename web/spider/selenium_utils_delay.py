@@ -39,7 +39,7 @@ if __name__ == '__main__':
 
     url = "http://www.dianping.com"
     # url = "https://www.baidu.com/"
-    url = "http://www.dianping.com/shop/110281977"
+    url = "http://www.dianping.com/shop/5668442"
     driver.get(url)
 
     # 获取页面元素

@@ -42,7 +42,7 @@ def get_dianping_url(url):
     # url = "http://www.dianping.com/shanghai/ch50/g183"
 
     response = spider_utils.requests_dianping2(url)
-    print(response.text)
+    # print(response.text)
 
     soup = BeautifulSoup(response.text, features="lxml")
 
@@ -157,7 +157,7 @@ def parse_dianping_url2(url2):
     response = spider_utils.requests_dianping2(url2)
 
     print("--159---")
-    print(response.text)
+    # print(response.text)
     # if response is not None and response.text.find("地址不对") == -1:
     #     print('---161----')
     #     soup = BeautifulSoup(response.text, features="lxml")
@@ -223,133 +223,143 @@ def parse_dianping_url2(url2):
     #         # with open("dianping_data_huangpu_spa.txt", "a+") as f:
     #         #     f.write(str2 + "\n")
 
-    soup = BeautifulSoup(response.text, features="lxml")
-    # print(response.text)
+    if response is not None and response.text.find("地址不对") == -1:
+        soup = BeautifulSoup(response.text, features="lxml")
+        # print(response.text)
 
-    # 如果counter_none 值为4,则说明IP被封,需更换IP
-    counter_none = 0
+        # 如果counter_none 值为4,则说明IP被封,需更换IP
+        counter_none = 0
 
-    # 医院名
-    hospital_name = ""
-    try:
-        hospital_name, b = soup.find("h1").stripped_strings
-        # print(hospital_name)
-    except Exception as e:
-        counter_none += 1
-        print(e)
+        # 医院名
+        hospital_name = ""
+        try:
+            hospital_name, b = soup.find("h1").stripped_strings
+            # print(hospital_name)
+        except Exception as e:
+            counter_none += 1
+            print(e)
 
-    # 地址
-    address = ""
-    try:
-        for i in soup.find("div", attrs={"class":"expand-info address"}).find_all("span"):
-            address += (str(i.get_text()).strip())
-            # print(address)
-    except Exception as e:
-        counter_none += 1
-        print(e)
+        # 地址
+        address = ""
+        try:
+            for i in soup.find("div", attrs={"class":"expand-info address"}).find_all("span"):
+                address += (str(i.get_text()).strip())
+                # print(address)
+        except Exception as e:
+            counter_none += 1
+            print(e)
 
-    # 电话
-    tel = ""
-    try:
-        tel = str(soup.find("p", attrs={"class":"expand-info tel"}).find("span", "item").get_text()).strip()
-        # print(tel)
-    except Exception as e:
-        counter_none += 1
-        print(e)
+        # 电话
+        tel = ""
+        try:
+            tel = str(soup.find("p", attrs={"class":"expand-info tel"}).find("span", "item").get_text()).strip()
+            # print(tel)
+        except Exception as e:
+            counter_none += 1
+            print(e)
 
-    # 星级
-    score = ""
-    try:
-        stars_str = soup.find("div", attrs={"class":"brief-info"}).find_all("span")[0]
-        score = re.findall(r"\d+\.?\d*",str(stars_str).strip())[0]
-    except Exception as e:
-        counter_none += 1
-        print(e)
+        # 星级
+        score = ""
+        try:
+            stars_str = soup.find("div", attrs={"class":"brief-info"}).find_all("span")[0]
+            score = re.findall(r"\d+\.?\d*",str(stars_str).strip())[0]
+        except Exception as e:
+            counter_none += 1
+            print(e)
 
-    # 检测IP是否被封
-    if counter_none == 4:
-        print("IP-Cookie失效, 更换....")
-        # selenium
-        # cookies = selenium_utils.no_delay_cookies(url)
-        # print(cookies)
+        # 检测IP是否被封
+        if counter_none == 4:
+            print("IP-Cookie失效, 更换....")
+            # selenium
+            # cookies = selenium_utils.no_delay_cookies(url)
+            # print(cookies)
 
-        spider_utils.change_ip_cookies(url2)
-        # spider_utils.change_ip()
-        print("重新执行该方法")
-        return parse_dianping_url2(url2)
+            spider_utils.change_ip_cookies(url2)
+            # spider_utils.change_ip()
+            print("重新执行该方法")
+            return parse_dianping_url2(url2)
+        else:
+            print('---217----')
+            str2 = url2 + "^" + hospital_name + "^" + address + "^" + tel + "^" + score
+            print(hospital_name, address, tel, score)
+
+            return str2
+            # with open("dianping_data_huangpu_spa.txt", "a+") as f:
+            #     f.write(str2 + "\n")
     else:
-        print('---217----')
-        str2 = url2 + "^" + hospital_name + "^" + address + "^" + tel + "^" + score
-        print(hospital_name, address, tel, score)
-
-        return str2
-        # with open("dianping_data_huangpu_spa.txt", "a+") as f:
-        #     f.write(str2 + "\n")
+        return parse_dianping_url2(url2)
 
 def get_all_page_links():
 
-    # http://www.dianping.com/shanghai/ch50/g158r6
-    # http://www.dianping.com/shanghai/ch50/g158r6p2
-    # http://www.dianping.com/shanghai/ch50/g158r6p50
-
-    url_start = "http://www.dianping.com/shanghai/ch50/g158r6"
+    url_start = "http://www.dianping.com/shanghai/ch50/g158r9"
     url_list = list()
     url_list.append(url_start)
 
-    for i in range(50):
+    for i in range(31):
         if i > 0:
-            url_former = "http://www.dianping.com/shanghai/ch50/g158r6p" + str(i+1) + "?cpt=23925672"
+            # url_former = "http://www.dianping.com/shanghai/ch50/g158r6p" + str(i+1) + "?cpt=23925672"
+            url_former = "http://www.dianping.com/shanghai/ch50/g158r9p" + str(i+1)
             url_list.append(url_former)
 
     return url_list
 
+def get_all_detail_page_links():
+    ########### 1、将url写入文件 ###############
+    province = '上海市'
+    city = '上海市'
+    region = '虹口区'
+
+    str1 = ""
+    for i in get_all_page_links():
+        print(i)
+        url_sets = get_dianping_url(i)
+
+        for res in url_sets:
+            str1 = str1 + province + '^' + city + '^' + region + '^' + res + "\n"
+
+    with open("url_all.txt", "a+") as f:
+        f.write(str1)
+    ########### 1、将url写入文件 ###############
+
 if __name__ == '__main__':
+    # get_all_detail_page_links()
     # print(get_dianping_url("http://www.dianping.com/shanghai/ch50/g183"))
 
     # 获取所有页面主链接
     # print(get_all_page_links())
 
-    ########### 1、将url写入文件 ###############
-    # str1 = ""
-    # for i in get_all_page_links():
-    #     print(i)
-    #     url_sets = get_dianping_url(i)
-    #
-    #     for res in url_sets:
-    #         print(res)
-    #         str1 = str1 + res + "\n"
-    #
-    # with open("url_all.txt", "a+") as f:
-    #     f.write(str1)
-
-    ########### 1、将url写入文件 ###############
+    province = '上海市'
+    city = '上海市'
+    region = '虹口区'
     with open("url_all.txt") as f:
-        file_path = "dianping_data_huangpu_spa.txt"
+        file_path = "dianping_data_hongkou.txt"
 
         counter = 1
         flag = False
-        last_one = ""
+        last_one_url = ""
         if os.path.exists(file_path):
             with open(file_path) as f2:
-                last_one = f2.readlines()[-1].split('^')[0]
+                last_one_url = f2.readlines()[-1].split('^')[3]
         else:
             flag = True
 
         for line in f.readlines():
-            url = line.strip()
+            url = line.strip().split('^')[3]
 
-            if last_one == url:
+            if last_one_url == url:
                 flag = True
                 continue
 
             if flag is True:
                 print("开始解析第%d行, %s"%(counter, url))
-                parse_dianping_url2(url)
+                str2 = province + '^' + city + '^' + region + '^' + parse_dianping_url2(url)
+
+                with open(file_path, "a+") as f2:
+                    f2.write(str2 + "\n")
                 # print(url)
-                if counter%50 == 0:
+                if counter%150 == 0:
                     print("切换")
                     spider_utils.change_ip()
                 print("结束解析----------" + '\n')
 
                 counter +=1
-    ########### 1、将url写入文件 ###############
