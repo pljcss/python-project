@@ -33,5 +33,5 @@ def input_time_random():
     return random.randint(200, 351)
 
 if __name__ == '__main__':
-    login = ZhiHuLogin('13196986255', 'xxxxxx')
+    login = ZhiHuLogin('xxxxxx', 'xxxxxx')
     asyncio.get_event_loop().run_until_complete(login.run())
