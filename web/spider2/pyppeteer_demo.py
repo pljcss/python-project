@@ -48,16 +48,28 @@ async def pyppeteer_demo(username, pwd):
         await asyncio.sleep(2)
         # 不同场景的验证码模块能名字不同
         await page.hover('#nc_1_n1z')
+
+        start_x = page.mouse._x
+        print('-----', start_x)
+
         await page.mouse.down()
-        await page.mouse.move(2000, 0, {'delay': random.randint(100, 151)})
+        # await page.mouse.move(2000, 0, {'delay': random.randint(1000, 2000)})
+        # await page.mouse.move(2000, 0, {'delay': input_time_random() - 50})
+
+        # 带有步长的方式可能会被识别出,如设置为30
+        await page.mouse.move(2000, 0, {'steps': 3})
+        # await page.mouse.move(2000, 0)
+
+        # await move_utils(page)
         await page.mouse.up()
 
         await asyncio.sleep(2)
         # await page.keyboard.press('Enter')
 
-        await page.click('#J_SubmitStatic')
+        # await page.click('#J_SubmitStatic')
     else:
-        await page.click('#J_SubmitStatic')
+        # await page.click('#J_SubmitStatic')
+        pass
     #
     # time.sleep(2)
     #
@@ -80,6 +92,11 @@ async def pyppeteer_demo(username, pwd):
 
 def input_time_random():
     return random.randint(100, 151)
+
+async def move_utils(page):
+    for i in range(10):
+        await page.mouse.move(i * 100, 0)
+        await page.waitFor(1)
 
 if __name__ == '__main__':
     # request_demo()

@@ -3,6 +3,7 @@ import asyncio
 from pyppeteer import launch
 import random
 
+
 width, height = 1280, 960
 class ZhiHuLogin(object):
     # 初始化参数
@@ -11,7 +12,7 @@ class ZhiHuLogin(object):
             self.username = username
             self.password = password
 
-    # 运行pyppeteer
+    # 运行 pyppeteer
     async def run(self):
         browser = await launch(headless=False, autoClose=False,
                                args=['--disable-infobars', f'--window-size={width},{height}'])
@@ -29,6 +30,7 @@ class ZhiHuLogin(object):
 
         # 点击登录按钮
         # await page.click('#root > div > main > div > div > div.Card.SignContainer-content > div > form > button')
+
 def input_time_random():
     return random.randint(200, 351)
 

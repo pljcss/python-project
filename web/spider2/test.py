@@ -1,4 +1,5 @@
 
+
 def screen_size():
     """使用tkinter获取屏幕大小"""
     import tkinter

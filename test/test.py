@@ -1,3 +1,5 @@
+import cv2
+
 def consumer():
     r = ''
     while True:
@@ -19,3 +21,4 @@ def produce(c):
 
 c = consumer()
 produce(c)
+
