@@ -58,5 +58,5 @@ class TaoBaoSpider(object):
             self.browser.close()
 
 if __name__ == '__main__':
-    spider = TaoBaoSpider('xxxxxx', 'xxxxxx')
+    spider = TaoBaoSpider('xxxxx', 'xxxx')
     spider.run()

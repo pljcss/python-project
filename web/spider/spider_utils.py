@@ -312,9 +312,10 @@ def requests_dianping2(url):
 
         ip_res = test_ip(new_ip)
         cookies = eval(str(all_ip[1]).strip("\n"))
-        cookies['_lxsdk_s'] = str(cookies['_lxsdk_s'])[:-1] + str(incre_value2)
-        print("cookies-----", cookies)
-        print(cookies['_lxsdk_s'])
+        if '_lxsdk_s' in cookies.keys():
+            cookies['_lxsdk_s'] = str(cookies['_lxsdk_s'])[:-1] + str(incre_value2)
+            print("cookies-----", cookies)
+            print(cookies['_lxsdk_s'])
 
         # {'navCtgScroll': '0', 'showNav': '#nav-tab|0|1', '_lxsdk_cuid': '16c8524c06dc8-0fbfa373eef812-38617706-fa000-16c8524c06ec8', '_lxsdk': '16c8524c06dc8-0fbfa373eef812-38617706-fa000-16c8524c06ec8', '_hc.v': '4f73dde6-e19c-aa5f-664d-293fffc68ba6.1565601874', 'cy': '1', 'cye': 'shanghai', 's_ViewType': '10', 'aburl': '1', '_lx_utm': 'utm_source%3DBaidu%26utm_medium%3Dorganic', '_dp.ac.v': '113defd1-e63f-443f-aa90-a403d578dd89', 'dper': '28cc54be70dfd1f4ac2657e283ef1650b2c93e55b5f80091ef415af0d19b6b9c1ffaa11b184c45559639549f97002159e3c531539987ff07ee08acf55127cb3c66304104fc8379f54da1f518f3f8b6b65e73c571c63e6321b557db89dc8f856c', 'll': '7fd06e815b796be3df069dec7836c3df', 'ua': 'dpuser_2576874915', 'ctu': 'b195049f98f16d52487f41926afa0676cdafef28688d4eafc9bb1efcbbfd8d79', 'uamo': '13196986255', '_lxsdk_s': '16c981ca833-81b-463-fd6%7C%7C118'}
 
@@ -443,7 +444,7 @@ def sub_rect_baidu():
 
 def change_ip():
     start_time = datetime.datetime.now()
-    command_linux = "ssh root@58.211.138.89 -p20011 'sh restart_pp.sh'"
+    command_linux = "ssh root@58.211.138.87 -p20023 'sh restart_pp.sh'"
     str1 = os.popen(command_linux)
     res_ip = str1.read()
     end_time = datetime.datetime.now()
@@ -468,7 +469,7 @@ def change_ip_cookies(url_t):
     start_time = datetime.datetime.now()
 
     # 切换IP并解析
-    command_linux = "ssh root@58.211.138.89 -p20011 'sh restart_pp.sh'"
+    command_linux = "ssh root@58.211.138.87 -p20023 'sh restart_pp.sh'"
     str1 = os.popen(command_linux)
     res_ip = str1.read()
 
@@ -521,7 +522,7 @@ def test_ip(ip_address):
 
 
 if __name__ == '__main__':
-    change_ip_cookies('http://www.dianping.com/shop/130069735')
+    # change_ip_cookies('http://www.dianping.com/shop/110281977')
     # result = requests_dianping2("http://icanhazip.com")
     # if result is None:
     #     print(result)
@@ -540,8 +541,10 @@ if __name__ == '__main__':
     # url = "http://m.dianping.com/beauty/book/bookphoneno/show?attachtype=0"
 
     # url = "http://www.dianping.com/shop/126746440"
-    # url = "http://www.dianping.com/shop/110281977"
-    # res = requests_dianping2(url)
-    # print(res.text)
+    url = "http://www.dianping.com/shop/110281977"
+    res = requests_dianping2(url)
+    print(res.text)
 
     # print(test_ip("115.217.45.0"))
+
+    # change_ip()

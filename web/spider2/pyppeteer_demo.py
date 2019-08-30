@@ -100,4 +100,4 @@ async def move_utils(page):
 
 if __name__ == '__main__':
     # request_demo()
-    asyncio.get_event_loop().run_until_complete(pyppeteer_demo('xxxxxx', 'xxxxxx'))
+    asyncio.get_event_loop().run_until_complete(pyppeteer_demo('xxxx', 'xxxx'))

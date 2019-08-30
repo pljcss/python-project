@@ -15,7 +15,7 @@ def add1(num):
         global_num += 1
         # 解锁
         mutex.release()
-    print global_num
+    print(global_num)
 
 def add2(num):
     global global_num
@@ -26,7 +26,7 @@ def add2(num):
         global_num += 1
         # 解锁
         mutex.release()
-    print global_num
+    print(global_num)
 
 def main():
     t1 = threading.Thread(target=add1, args=(10000,))

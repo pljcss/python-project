@@ -7,13 +7,13 @@ def recv_msg(udp_socket):
     """接收数据并显示"""
     while True:
         recv_data = udp_socket.recvfrom(1024)
-        print recv_data
+        print(recv_data)
 
 
 def send_msg(udp_socket):
     """发送数据"""
     while True:
-        send_data = raw_input('请输入要发送的数据')
+        send_data = input('请输入要发送的数据')
         udp_socket.sendto(send_data.encode('utf-8'), ('127.0.0.1', 7788))
 
 def main():

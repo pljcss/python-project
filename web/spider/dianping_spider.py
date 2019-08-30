@@ -156,7 +156,6 @@ def parse_dianping_url2(url2):
     """
     response = spider_utils.requests_dianping2(url2)
 
-    print("--159---")
     # print(response.text)
     # if response is not None and response.text.find("地址不对") == -1:
     #     print('---161----')
@@ -223,7 +222,10 @@ def parse_dianping_url2(url2):
     #         # with open("dianping_data_huangpu_spa.txt", "a+") as f:
     #         #     f.write(str2 + "\n")
 
-    if response is not None and response.text.find("地址不对") == -1:
+    # print(response.text)
+    # 不能这样使用地址不对,因为本中可能存在这种值
+    # if response is not None and response.text.find("地址不对") == -1:
+    if response is not None:
         soup = BeautifulSoup(response.text, features="lxml")
         # print(response.text)
 
@@ -287,27 +289,28 @@ def parse_dianping_url2(url2):
             # with open("dianping_data_huangpu_spa.txt", "a+") as f:
             #     f.write(str2 + "\n")
     else:
+        print('#'*20)
         return parse_dianping_url2(url2)
 
 def get_all_page_links():
 
-    url_start = "http://www.dianping.com/shanghai/ch50/g158r9"
+    url_start = "http://www.dianping.com/hangzhou/ch50/g158r8845"
     url_list = list()
     url_list.append(url_start)
 
-    for i in range(31):
+    for i in range(50):
         if i > 0:
-            # url_former = "http://www.dianping.com/shanghai/ch50/g158r6p" + str(i+1) + "?cpt=23925672"
-            url_former = "http://www.dianping.com/shanghai/ch50/g158r9p" + str(i+1)
+            # url_former = "http://www.dianping.com/beijing/ch50/g158r5950p" + str(i+1) + "?cpt=5220127%2C19813864"
+            url_former = url_start + "p" + str(i+1)
             url_list.append(url_former)
 
     return url_list
 
 def get_all_detail_page_links():
     ########### 1、将url写入文件 ###############
-    province = '上海市'
-    city = '上海市'
-    region = '虹口区'
+    province = '浙江省'
+    city = '杭州市'
+    region = '余杭区'
 
     str1 = ""
     for i in get_all_page_links():
@@ -315,6 +318,7 @@ def get_all_detail_page_links():
         url_sets = get_dianping_url(i)
 
         for res in url_sets:
+            print(res)
             str1 = str1 + province + '^' + city + '^' + region + '^' + res + "\n"
 
     with open("url_all.txt", "a+") as f:
@@ -328,38 +332,40 @@ if __name__ == '__main__':
     # 获取所有页面主链接
     # print(get_all_page_links())
 
-    province = '上海市'
-    city = '上海市'
-    region = '虹口区'
-    with open("url_all.txt") as f:
-        file_path = "dianping_data_hongkou.txt"
+    get_all_detail_page_links()
 
-        counter = 1
-        flag = False
-        last_one_url = ""
-        if os.path.exists(file_path):
-            with open(file_path) as f2:
-                last_one_url = f2.readlines()[-1].split('^')[3]
-        else:
-            flag = True
-
-        for line in f.readlines():
-            url = line.strip().split('^')[3]
-
-            if last_one_url == url:
-                flag = True
-                continue
-
-            if flag is True:
-                print("开始解析第%d行, %s"%(counter, url))
-                str2 = province + '^' + city + '^' + region + '^' + parse_dianping_url2(url)
-
-                with open(file_path, "a+") as f2:
-                    f2.write(str2 + "\n")
-                # print(url)
-                if counter%150 == 0:
-                    print("切换")
-                    spider_utils.change_ip()
-                print("结束解析----------" + '\n')
-
-                counter +=1
+    # with open("url_all.txt") as f:
+    #     file_path = "dianping_hangzhou_data_spa.txt"
+    #
+    #     counter = 1
+    #     flag = False
+    #     last_one_url = ""
+    #     if os.path.exists(file_path):
+    #         with open(file_path) as f2:
+    #             last_one_url = f2.readlines()[-1].split('^')[3]
+    #     else:
+    #         flag = True
+    #
+    #     for line in f.readlines():
+    #         province = line.strip().split('^')[0]
+    #         city = line.strip().split('^')[1]
+    #         region = line.strip().split('^')[2]
+    #         url = line.strip().split('^')[3]
+    #
+    #         if last_one_url == url:
+    #             flag = True
+    #             continue
+    #
+    #         if flag is True:
+    #             print("开始解析第%d行, %s"%(counter, url))
+    #             str2 = province + '^' + city + '^' + region + '^' + parse_dianping_url2(url)
+    #
+    #             with open(file_path, "a+") as f2:
+    #                 f2.write(str2 + "\n")
+    #             # print(url)
+    #             # if counter%150 == 0:
+    #             #     print("切换")
+    #             #     spider_utils.change_ip()
+    #             print("结束解析----------" + '\n')
+    #
+    #             counter +=1

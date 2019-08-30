@@ -43,3 +43,8 @@ if __name__ == '__main__':
     with open("url_all.txt") as f:
         for i in f.readlines():
             print(i.strip().split('^')[3])
+
+
+    dd = {'d':None}
+
+    print(dd)

@@ -4,13 +4,13 @@ import threading
 
 def sing():
     for i in range(50000):
-        print "sing a song"
+        print("sing a song")
         time.sleep(1)
 
 
 def dance():
     for i in range(50000):
-        print "dance"
+        print("dance")
         time.sleep(1)
 
 
@@ -27,7 +27,7 @@ def main():
 
     # enumerate可以显示当前运行的所以线程
     # 共三个线程,主线程和两个子线程(但是不一定,因为线程的执行是部分先后顺序的)
-    print threading.enumerate()
+    print(threading.enumerate())
 
 if __name__ == '__main__':
     main()

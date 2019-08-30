@@ -70,10 +70,11 @@ def no_delay_cookies(url):
 
     if cookie_dict is not None:
         lxsdk_s = cookie_dict.get("_lxsdk_s")
-        increase_int = lxsdk_s[(int(lxsdk_s.rindex('C')) + 1):]
+        if lxsdk_s is not None:
+            increase_int = lxsdk_s[(int(lxsdk_s.rindex('C')) + 1):]
 
-        with open('incre_cookid_detail', 'w') as f:
-            f.write(str(increase_int))
+            with open('incre_cookid_detail', 'w') as f:
+                f.write(str(increase_int))
     else:
         with open('incre_cookid_detail', 'w') as f:
             f.write(5)
