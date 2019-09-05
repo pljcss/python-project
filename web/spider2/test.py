@@ -1,4 +1,4 @@
-
+import requests
 
 def screen_size():
     """使用tkinter获取屏幕大小"""
@@ -10,5 +10,8 @@ def screen_size():
     return width, height
 
 if __name__ == '__main__':
-    w,h = screen_size()
-    print(w,h)
+    # w,h = screen_size()
+    # print(w,h)
+
+
+    print(requests.get('http://106.12.39.147/').text)
